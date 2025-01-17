@@ -3,7 +3,7 @@
  -->
 <template>
   <FoldContainer class="page-tree" direction="x" name="左侧" :width="option.width">
-    <div :style="{ width: option.width ? option.width : config.leftTreeWidth }" style="height: 100%;">
+    <div :style="{ width: option.width ? option.width : leftTreeWidth }" style="height: 100%;">
       <div style="margin-right: 8px; height: 100%; display: flex; flex-direction: column; flex: none;">
         <!-- 树搜索框 -->
         <div class="page-tree-search">
@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import api from "../api/api.js";
+import api from "../api/index.js";
 import FoldContainer from "../fold/FoldContainer.vue";
-import { config } from "../config";
+import { config } from "../config/index.js";
 import Util from "../util.js";
 
 export default {
@@ -76,7 +76,7 @@ export default {
   },
   data() {
     return {
-      config,
+      leftTreeWidth: config.leftTreeWidth, // 树宽度
       filter: "", // 搜索输入框的value
       fold: false, // 折叠展开状态
       data: null, // 树数据

@@ -4,7 +4,7 @@
     :placeholder="placeholder"></el-cascader>
 </template>
 <script>
-import api from "../api/api.js";
+import api from "../api/index.js";
 import Util from '../util.js';
 export default {
   name: 'ApiCascader',

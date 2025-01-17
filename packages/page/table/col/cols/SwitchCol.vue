@@ -20,7 +20,7 @@
 
 <script>
 import Util from "../../../util.js";
-import api from "../../../api/api.js";
+import api from "../../../api/index.js";
 import ColMixin from "../ColMixin.js";
 
 export default {

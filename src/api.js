@@ -6,6 +6,8 @@
  * @returns Promise
  */
 function f(url, method, params) {
+  console.log('外部api: ', url, method, params);
+
   return new Promise((resolve, reason) => {
 
     const options = {

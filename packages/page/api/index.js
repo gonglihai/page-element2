@@ -1,6 +1,5 @@
 import defaultApi from "./fetchApi";
 
-// todo 外部 request
 let request = defaultApi;
 
 /**
@@ -42,5 +41,8 @@ export default {
  * @param {Object} api 
  */
 export function setApi(api) {
+  if (!api) {
+    return;
+  }
   request = api;
 }

@@ -1,10 +1,18 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+
 import Page from '../packages'
 
+// import api from "./api";
+
 Vue.use(Page, {
-  prefix: 'C'
+  prefix: 'C',
+  config: {
+    leftTreeWidth: '200px',
+    treeExpandLevel: 2,
+  },
+  // api: api
 })
 
 Vue.config.productionTip = false

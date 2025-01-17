@@ -35,7 +35,7 @@ export default {
     // 当方向为 x 水平时, 容器宽度
     width: {
       type: String,
-      default: config.leftTreeWidth
+      default: () => config.leftTreeWidth
     }
   },
   data() {

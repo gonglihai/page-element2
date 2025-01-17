@@ -40,9 +40,9 @@
 <script>
 import ElTableColumnPack from "./ElTableColumnPack.vue";
 
-import api from "../api/api.js";
+import api from "../api/index.js";
 import util from "../util.js";
-import { config } from "../config.js";
+import { config } from "../config/index.js";
 
 export default {
   components: {

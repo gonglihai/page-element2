@@ -63,7 +63,7 @@ import ToolButton from "./button/ToolButton.vue";
 import DataTable from "./table/DataTable.vue";
 
 import Util from "./util.js";
-import api from "./api/api.js";
+import api from "./api/index.js";
 import FoldContainer from "./fold/FoldContainer.vue";
 
 export default {
