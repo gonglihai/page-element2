@@ -47,11 +47,11 @@ export default {
     },
     thisProps() {
       return {
-        label: this.props?.label || "label",
-        value: this.props?.value || "label",
-        checked: this.props?.checked || 'checked'
-      }
-    },
+        label: (this.props && this.props.label) || "label",
+        value: (this.props && this.props.value) || "label",
+        checked: (this.props && this.props.checked) || "checked"
+      };
+    }
   },
   data() {
     return {

@@ -20,7 +20,7 @@
       </template>
     </left-tree>
     <div class="custom-page-right-div">
-      
+
       <!-- 查询条件 -->
       <FoldContainer class="custom-page-search" v-if="option.search" name="查询条件">
         <search-index :option="option.search" @search="searchClick" ref="search" :searchData="searchData">
@@ -114,7 +114,8 @@ export default {
           break;
         case "field": // 单字段默认
         default:
-          this.searchData[this.option.tree.field] = treeNode ? treeNode[this.option.tree?.props?.value || "id"] : undefined;
+          const f = this.option.tree && this.option.tree.props && this.option.tree.props.value;
+          this.searchData[this.option.tree.field] = treeNode ? treeNode[f || "id"] : undefined;
       }
     },
     /**
@@ -128,7 +129,9 @@ export default {
      * 表格重载
      */
     tableReload(params) {
-      this.$refs?.dataTable?.reloadData({ ...this.searchData, ...params });
+      if (this.$refs && this.$refs.dataTable && typeof this.$refs.dataTable.reloadData === 'function') {
+        this.$refs.dataTable.reloadData({ ...this.searchData, ...params });
+      }
     },
     /**
      * 工具栏按钮点击事件

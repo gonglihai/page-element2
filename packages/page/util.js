@@ -32,7 +32,7 @@ export default {
       if (item[field] instanceof Array) {
         // 对于日期范围下拉框 DateRangeSelect.vue 等组件多个值的情况进行特殊处理, field 是 数组, default 也是数组
         item[field].forEach((fieldKey, fieldIndex) => {
-          Vue.set(sourceObject, fieldKey, this.getValueByDefault(item[defaultField]?.[fieldIndex]));
+          Vue.set(sourceObject, fieldKey, this.getValueByDefault(item[defaultField] && item[defaultField][fieldIndex]));
         })
         return;
       }
