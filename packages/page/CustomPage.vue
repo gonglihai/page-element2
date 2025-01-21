@@ -113,9 +113,10 @@ export default {
           }
           break;
         case "field": // 单字段默认
-        default:
+        default: {
           const f = this.option.tree && this.option.tree.props && this.option.tree.props.value;
           this.searchData[this.option.tree.field] = treeNode ? treeNode[f || "id"] : undefined;
+        }
       }
     },
     /**
