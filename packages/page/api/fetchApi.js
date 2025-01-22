@@ -14,10 +14,12 @@ function f(url, method, params) {
       },
     };
 
+    // 非 get 请求， 设置 Content-Type 为 json
     if (method != 'GET') {
       options.headers["Content-Type"] = "application/json";
     }
 
+    // get 请求，拼接 url 参数
     if (method == 'GET' && params) {
       url = url + (url.includes('?') ? '&' : '?') + Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
     }

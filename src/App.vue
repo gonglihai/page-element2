@@ -16,7 +16,7 @@ export default {
           api: '/mook/tree.json',
         },
         search: [
-          { label: '企微账号', field: 'code' },
+          { label: '账号', field: 'id' },
           { label: '姓名', field: 'name' },
           {
             label: '性别', field: 'gender', type: 'select', option: [
@@ -27,14 +27,15 @@ export default {
           }
         ],
         button: [
-          { name: '添加' },
-          { name: '编辑' },
-          { name: '删除' }
+          { name: '添加', click: () => console.log('点击了添加') },
+          { name: '编辑', selectCount: 1, click: this.edit },
+          { name: '删除', selectMin: 1, click: this.del },
         ],
         table: {
+          select: true,
           api: '/mook/table.json',
           col: [
-            { field: "id", name: "编号" },
+            { field: 'id', name: '账号' },
             { field: "name", name: "姓名" },
             { field: "gender", name: "性别" },
             { field: "birthday", name: "生日" },
@@ -53,14 +54,22 @@ export default {
             {
               name: '操作', type: "button", button: [
                 { name: '详情' },
-                { name: '编辑' },
-                { name: '删除', confirmClick: ({ row }) => console.log('点击了删除, row: ', row) },
+                { name: '编辑', click: ({ row }) => this.edit([row]) },
+                { name: '删除', confirmClick: ({ row }) => this.del([row]) },
               ]
             }
           ]
         }
       }
     }
+  },
+  methods: {
+    edit(rows) {
+      console.log('点击了编辑，选中的行：', rows)
+    },
+    del(rows) {
+      console.log('点击了删除，选中的行：', rows)
+    },
   }
 }
 </script>
