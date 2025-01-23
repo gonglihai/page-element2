@@ -1,24 +1,10 @@
 # page-element2
 
-## Project setup
-```
-npm install
-```
+快速配置增删改查页面
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+[Github](https://github.com/gonglihai/page-element2)
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[使用文档](https://github.com/gonglihai/page-element2-doc)
+

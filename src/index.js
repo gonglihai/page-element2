@@ -1,7 +1,6 @@
 import VPage from './page/VPage.vue';
 import { setApi } from './page/api';
 import { setConfig } from './page/config/index.js';
-// import elui from './elui';
 
 
 // 组件列表
