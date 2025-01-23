@@ -9,5 +9,3 @@ export default {
   mixins: [ColMixin],
 };
 </script>
-
-<style></style>

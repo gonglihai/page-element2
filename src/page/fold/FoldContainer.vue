@@ -45,7 +45,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .fold-container {
   display: flex;
 }

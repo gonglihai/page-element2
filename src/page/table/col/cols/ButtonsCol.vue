@@ -71,7 +71,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .table-col-button+.table-col-button {
   margin-left: 4px;
 }

@@ -212,7 +212,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .page-tree-search {
   flex-shrink: 0;
   display: flex;
