@@ -1,4 +1,4 @@
-import CustomPage from './page/CustomPage.vue';
+import VPage from './page/VPage.vue';
 import { setApi } from './page/api';
 import { setConfig } from './page/config/index.js';
 
@@ -6,7 +6,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 
 // 组件列表
-const components = { Page: CustomPage };
+const components = { Page: VPage };
 
 // 定义 install 方法, 接收 Vue 作为参数. 如果使用 use 注册插件，则所有的组件都将被注册
 const install = function (Vue, options = {}) {
@@ -21,10 +21,10 @@ const install = function (Vue, options = {}) {
 
   // 遍历注册全局组件
   // 指定组件前缀
-  const prefix = options.prefix || '';
+  const prefix = options.prefix || 'V';
   for (const [defaultName, component] of Object.entries(components)) {
     const name = prefix + defaultName
-    console.log('[CustomPage] 组件注册 name:', name, 'component:', component);
+    console.log('[VPage] 组件注册 name:', name, 'component:', component);
     Vue.component(name, component)
   }
 }
@@ -32,7 +32,8 @@ const install = function (Vue, options = {}) {
 
 // 判断是否是直接引入文件
 if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue)
+  // 手动安装
+  window.__pageElement2 = install;
 }
 
 export default {

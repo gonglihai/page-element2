@@ -3,9 +3,9 @@
  -->
 
 <template>
-  <div class="custom-page">
+  <div class="v-page">
     <!-- 左侧树 -->
-    <left-tree v-if="option.tree" ref="tree" :option="option.tree" class="custom-page-left-tree" @click="treeClick">
+    <left-tree v-if="option.tree" ref="tree" :option="option.tree" class="v-page-left-tree" @click="treeClick">
       <!-- 树搜索框前插槽 -->
       <template #tree-search-start>
         <slot name="tree-search-start"></slot>
@@ -19,10 +19,10 @@
         <slot name="tree-node" :node="node" :data="data"></slot>
       </template>
     </left-tree>
-    <div class="custom-page-right-div">
+    <div class="v-page-right-div">
 
       <!-- 查询条件 -->
-      <FoldContainer class="custom-page-search" v-if="option.search" name="查询条件">
+      <FoldContainer class="v-page-search" v-if="option.search" name="查询条件">
         <search-index :option="option.search" @search="searchClick" ref="search" :searchData="searchData">
           <template #search-button-start>
             <slot name="search-button-start"></slot>
@@ -34,7 +34,7 @@
       </FoldContainer>
 
       <!-- 工具栏按钮 -->
-      <tool-button class="custom-page-tool-button" v-if="option.button && option.button.length" :option="option.button"
+      <tool-button class="v-page-tool-button" v-if="option.button && option.button.length" :option="option.button"
         :tableSelect="tableSelect" @click="toolButtonClick">
         <template #button-start>
           <slot name="button-start"></slot>
@@ -45,7 +45,7 @@
       </tool-button>
 
       <!-- 数据表格 -->
-      <data-table class="custom-page-data-table" v-if="option.table" :option="option.table" :select.sync="tableSelect"
+      <data-table class="v-page-data-table" v-if="option.table" :option="option.table" :select.sync="tableSelect"
         :initSearch="initSearch" ref="dataTable">
         <template v-for="colSlot in tableColSlots" v-slot:[colSlot]="{ value, row, index, col, scope }">
           <slot :value="value" :row="row" :index="index" :col="col" :scope="scope" :name="colSlot">
@@ -287,20 +287,21 @@ export default {
 </script>
 
 <style scoped>
-.custom-page {
+
+
+.v-page {
   display: flex;
   height: 100%;
-  /* height: calc(100vh - 116px); */
   width: 100%;
   overflow: hidden;
 }
 
-.custom-page-left-tree {
+.v-page-left-tree {
   margin-right: 8px;
   flex-shrink: 0;
 }
 
-.custom-page-right-div {
+.v-page-right-div {
   display: flex;
   flex-direction: column;
   flex: auto;
@@ -308,16 +309,16 @@ export default {
   height: 100%;
 }
 
-.custom-page-tool-button {
+.v-page-tool-button {
   flex: none;
 }
 
-.custom-page-search {
+.v-page-search {
   margin-bottom: 8px;
   flex: none;
 }
 
-.custom-page-data-table {
+.v-page-data-table {
   flex: auto;
   overflow: hidden;
 }

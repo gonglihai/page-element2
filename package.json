@@ -1,14 +1,14 @@
 {
   "name": "page-element2",
   "description": "Page Element2",
-  "version": "0.1.8",
+  "version": "0.1.14",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name CustomPage --dest lib packages/index.js"
+    "lib": "vue-cli-service build --target lib --name VPage --dest lib packages/index.js"
   },
-  "main": "lib/CustomPage.umd.min.js",
+  "main": "lib/VPage.umd.min.js",
   "dependencies": {
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
