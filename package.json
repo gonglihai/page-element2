@@ -1,7 +1,7 @@
 {
   "name": "page-element2",
   "description": "Page Element2",
-  "version": "0.1.23",
+  "version": "0.1.25",
   "scripts": {
     "build": "vue-cli-service build --target lib --name VPage --dest lib src/index.js"
   },

@@ -212,7 +212,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .page-tree-search {
   flex-shrink: 0;
   display: flex;
@@ -228,6 +228,16 @@ export default {
   border-radius: 5px;
   margin-right: 4px;
   transition: all 0.3s;
+}
+
+/* 树选中蓝色背景 */
+.page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content {
+  background-color: #1890ff;
+  color: white;
+}
+
+.page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content:hover {
+  background-color: #46a6ff;
 }
 
 .page-tree-select {
@@ -247,16 +257,5 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-</style>
-<style>
-/* 树选中蓝色背景 */
-.v-page .page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content {
-  background-color: #1890ff;
-  color: white;
-}
-
-.v-page .page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content:hover {
-  background-color: #46a6ff;
 }
 </style>
