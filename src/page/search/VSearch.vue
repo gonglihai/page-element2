@@ -11,8 +11,8 @@
       </label>
       <!-- 下拉框 -->
       <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
-        :placeholder="placeholder(item)" :option="item.option" :api="item.api" :elementCode="item.elementCode"
-        :props="item.props" :group="item.group" :multiple="item.multiple" :multipleValueType="item.multipleValueType"
+        :placeholder="placeholder(item)" :option="item.option" :api="item.api" :props="item.props" :group="item.group"
+        :multiple="item.multiple" :multipleValueType="item.multipleValueType"
         :clearable="isAbsentTrue(item.clearable)" />
       <!-- 日期 -->
       <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
@@ -90,6 +90,9 @@ export default {
      * 处理 空值 占位符
      */
     placeholder(search) {
+      if (search.placeholder) {
+        return search.placeholder;
+      }
       let verb; // 操作动词, 输入框 请输入, 下拉框 请选择
       switch (search.type) {
         case "year":
@@ -104,7 +107,7 @@ export default {
           verb = "请输入";
           break;
       }
-      return search.placeholder ? search.placeholder : verb + Util.ifAbsentDefault(search.label, '');
+      return verb + Util.ifAbsentDefault(search.label, '');
     },
     /**
      * 返回 查询条件的 title 属性

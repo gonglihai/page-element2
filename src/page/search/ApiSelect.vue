@@ -110,7 +110,7 @@ export default {
   methods: {
     /**
      * 设置 option 源
-     * 优先级别: option > api > elementCode
+     * 优先级别: option > api
      */
     setOptionSource() {
       // 优先使用设置的
