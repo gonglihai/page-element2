@@ -17,19 +17,20 @@
       <!-- 日期 -->
       <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
         type="date" :placeholder="placeholder(item)" :size="'small'"
-        :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'" :format="item.valueFormat || 'yyyy-MM-dd'"
+        :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'" :format="item.format || 'yyyy-MM-dd'"
         :clearable="isAbsentTrue(item.clearable)" />
 
       <!-- 日期 范围 -->
       <DateRangeSelect v-else-if="item.type === 'date-range'" :id="labelForId(item)" :form="searchData"
-        :field="item.field" :clearable="isAbsentTrue(item.clearable)" />
+        :field="item.field" :value-format="item.valueFormat" :format="item.format"
+        :clearable="isAbsentTrue(item.clearable)" />
 
       <!-- 年 -->
       <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
         type="year" :placeholder="placeholder(item)" :size="'small'" :clearable="isAbsentTrue(item.clearable)"
         :value-format="item.valueFormat || 'yyyy'" />
 
-      <!-- 年月-->
+      <!-- 年月 -->
       <el-date-picker v-else-if="item.type === 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
         type="month" :placeholder="placeholder(item)" :size="'small'" :clearable="isAbsentTrue(item.clearable)"
         :value-format="item.valueFormat || 'yyyyMM'" />
