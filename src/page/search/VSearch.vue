@@ -1,18 +1,18 @@
 <!-- page 组件中查询条件
   -- @author GongLiHai
  -->
- <!-- eslint-disable vue/no-mutating-props -->
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="page-search" @keypress.enter="searchClick">
-    <div v-for="(item, index) in option" :key="`${option.field}_${option.label}_${index}`" class="page-search-item" :class="item.class" :title="title(item)">
+    <div v-for="(item, index) in option" :key="`${option.field}_${option.label}_${index}`" class="page-search-item"
+      :class="item.class" :title="title(item)">
       <label :for="labelForId(item)" class="page-search-item-label">
         {{ item.label }}
       </label>
       <!-- 下拉框 -->
-      <api-select v-if="['select', 'multiple-select'].indexOf(item.type) !== -1" :id="labelForId(item)"
-        v-model="searchData[item.field]" :placeholder="placeholder(item)" :option="item.option" :api="item.api"
-        :elementCode="item.elementCode" :props="item.props" :group="item.group"
-        :multiple="item.type == 'multiple-select'" :multipleValueType="item.multipleValueType"
+      <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
+        :placeholder="placeholder(item)" :option="item.option" :api="item.api" :elementCode="item.elementCode"
+        :props="item.props" :group="item.group" :multiple="item.multiple" :multipleValueType="item.multipleValueType"
         :clearable="isAbsentTrue(item.clearable)" />
       <!-- 日期 -->
       <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
@@ -25,12 +25,12 @@
         :field="item.field" :clearable="isAbsentTrue(item.clearable)" />
 
       <!-- 年 -->
-      <el-date-picker v-else-if="item.type == 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
+      <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
         type="year" :placeholder="placeholder(item)" :size="'small'" :clearable="isAbsentTrue(item.clearable)"
         :value-format="item.valueFormat || 'yyyy'" />
 
       <!-- 年月-->
-      <el-date-picker v-else-if="item.type == 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
+      <el-date-picker v-else-if="item.type === 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
         type="month" :placeholder="placeholder(item)" :size="'small'" :clearable="isAbsentTrue(item.clearable)"
         :value-format="item.valueFormat || 'yyyyMM'" />
 

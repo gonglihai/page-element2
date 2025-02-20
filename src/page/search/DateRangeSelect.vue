@@ -27,7 +27,7 @@ export default {
     },
     // 字段, 绑定到 form 中的属性名, 第一个是开始时间, 第二个是结束时间
     field: {
-      type: Array,
+      type: [Array, String],
       default() {
         return ['startTime', 'endTime']
       }
@@ -45,6 +45,12 @@ export default {
   },
   methods: {
     change(newValue) {
+      // field 是字符串
+      if (this.fieldIsString) {
+        this.$set(this.form, this.field, newValue);
+        return;
+      }
+      // field 是数组
       if (newValue) {
         this.$set(this.form, this.field[0], newValue[0])
         this.$set(this.form, this.field[1], newValue[1])
@@ -54,11 +60,22 @@ export default {
       this.$set(this.form, this.field[1], undefined)
     }
   },
+  computed: {
+    fieldIsString() {
+      return typeof this.field == 'string';
+    }
+  },
   watch: {
     // 监听上层属性改变
     form: {
       deep: true,
       handler: function (newValue) {
+        // field 是字符串
+        if (this.fieldIsString) {
+          this.thisValue = newValue[this.field];
+          return;
+        }
+        // field 是数组
         let time1 = newValue[this.field[0]];
         let time2 = newValue[this.field[1]];
         if (time1 && time2) {

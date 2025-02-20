@@ -23,14 +23,14 @@
 
       <!-- 查询条件 -->
       <FoldContainer class="v-page-search" v-if="option.search" name="查询条件">
-        <search-index :option="option.search" @search="searchClick" ref="search" :searchData="searchData">
+        <VSearch :option="option.search" @search="searchClick" ref="search" :searchData="searchData">
           <template #search-button-start>
             <slot name="search-button-start"></slot>
           </template>
           <template #search-button-end>
             <slot name="search-button-end"></slot>
           </template>
-        </search-index>
+        </VSearch>
       </FoldContainer>
 
       <!-- 工具栏按钮 -->
@@ -58,7 +58,7 @@
 
 <script>
 import LeftTree from "./tree/LeftTree.vue";
-import SearchIndex from "./search/SearchIndex.vue";
+import VSearch from "./search/VSearch.vue";
 import ToolButton from "./button/ToolButton.vue";
 import DataTable from "./table/DataTable.vue";
 
@@ -69,7 +69,7 @@ import FoldContainer from "./fold/FoldContainer.vue";
 export default {
   components: {
     LeftTree,
-    SearchIndex,
+    VSearch,
     ToolButton,
     DataTable,
     FoldContainer
