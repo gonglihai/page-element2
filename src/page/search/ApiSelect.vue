@@ -174,15 +174,22 @@ export default {
   },
   watch: {
     // 上层 value 改变, 本层 thisValue 改变
-    value(newVal) {
-      // 多选, 且多选值类型为 string 逗号分隔字符串
-      let thisValue;
-      if (this.multiple && this.multipleValueType === "string") {
-        thisValue = Util.commaStringToList(newVal);
-      } else {
-        thisValue = newVal;
-      }
-      this.thisValue = thisValue;
+    value: {
+      handler(newVal) {
+        // 多选, 且多选值类型为 string 逗号分隔字符串
+        let thisValue;
+        if (this.multiple && this.multipleValueType === "string") {
+          thisValue = Util.commaStringToList(newVal);
+          // 解决选项内值为 Number 类型, 字符串分割后, 值为 String 类型, 导致 el-select 无法选中的问题
+          if (this.thisOption && this.thisOption.length && typeof this.thisOption[0][this.thisProps.value] == 'number') {
+            thisValue = thisValue.map(item => Number(item));
+          }
+        } else {
+          thisValue = newVal;
+        }
+        this.thisValue = thisValue;
+      },
+      immediate: true
     },
     // api 变更, 更新选项, 更新值
     api(newVal) {
