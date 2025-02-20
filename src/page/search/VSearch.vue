@@ -94,6 +94,9 @@ export default {
       switch (search.type) {
         case "year":
         case "select":
+        case "date-range":
+        case "year-month":
+        case "date":
           verb = "请选择";
           break;
         case "input":
