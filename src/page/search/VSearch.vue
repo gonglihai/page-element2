@@ -101,7 +101,7 @@ export default {
           verb = "请输入";
           break;
       }
-      return search.placeholder ? search.placeholder : verb + search.label;
+      return search.placeholder ? search.placeholder : verb + Util.ifAbsentDefault(search.label, '');
     },
     /**
      * 返回 查询条件的 title 属性
