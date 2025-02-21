@@ -32,7 +32,7 @@ export default {
    * @returns Promise 删除结果
    */
   delete(uri, params) {
-    return request.post(uri, params);
+    return request.delete(uri, params);
   },
 };
 

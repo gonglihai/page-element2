@@ -9,19 +9,21 @@ function f(url, method, params) {
   return new Promise((resolve, reason) => {
 
     const options = {
-      headers: {
-        method,
-      },
+      method,
+      headers: {},
     };
 
-    // 非 get 请求， 设置 Content-Type 为 json
-    if (method != 'GET') {
-      options.headers["Content-Type"] = "application/json";
-    }
-
-    // get 请求，拼接 url 参数
-    if (method == 'GET' && params) {
-      url = url + (url.includes('?') ? '&' : '?') + Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+    // 请求参数
+    if (params) {
+      // 带 body 的, 设置 Content-Type 为 json, body 为参数
+      if (['POST', 'PUT', 'PATCH', 'CONNECT', 'TRACE'].includes(method)) {
+        options.headers["Content-Type"] = "application/json";
+        options.body = JSON.stringify(params);
+      }
+      // 不带 body 的, 设置 url 参数
+      if (['GET', 'HEAD', 'OPTIONS', 'DELETE'].includes(method)) {
+        url = url + (url.includes('?') ? '&' : '?') + Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+      }
     }
 
     fetch(url, options).then(response => response.json())
@@ -56,6 +58,6 @@ export default {
    * @returns Promise 删除结果
    */
   delete(uri, params) {
-    return f(uri, 'POST', params)
+    return f(uri, 'DELETE', params)
   },
 }
