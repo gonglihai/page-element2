@@ -282,13 +282,27 @@ export default {
       }
       return null;
     },
+    // tree refs 映射
+    $tree() {
+      return this.$refs.tree
+    },
+    // search refs 映射
+    $search() {
+      return this.$refs.search;
+    },
+    // button refs 映射
+    $button() {
+      return this.$refs.button;
+    },
+    // dataTable refs 映射
+    $table() {
+      return this.$refs.dataTable;
+    }
   },
 };
 </script>
 
 <style scoped>
-
-
 .v-page {
   display: flex;
   height: 100%;

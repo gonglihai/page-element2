@@ -3,7 +3,7 @@
  -->
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="page-search" @keypress.enter="searchClick">
+  <div class="page-search" @keypress.enter="search">
     <div v-for="(item, index) in option" :key="`${option.field}_${option.label}_${index}`" class="page-search-item"
       :class="item.class" :title="title(item)">
       <label :for="labelForId(item)" class="page-search-item-label">
@@ -41,8 +41,8 @@
     </div>
     <div class="page-search-button">
       <slot name="search-button-start"></slot>
-      <el-button @click="searchClick" type="primary" size="mini" icon="el-icon-search">搜索</el-button>
-      <el-button @click="resetClick" size="mini" icon="el-icon-refresh">重置</el-button>
+      <el-button @click="search" type="primary" size="mini" icon="el-icon-search">搜索</el-button>
+      <el-button @click="reset" size="mini" icon="el-icon-refresh">重置</el-button>
       <slot name="search-button-end"></slot>
     </div>
   </div>
@@ -119,17 +119,20 @@ export default {
     /**
      * 查询点击事件
      */
-    searchClick() {
+    search() {
       this.$emit("search", this.searchData);
     },
     /**
      * 重置点击事件
      */
-    resetClick() {
+    reset() {
       // 重置 data 为 默认值
       Util.eachSetResponsive(this.searchData, this.option, "field", "default");
-      this.searchClick();
+      this.search();
     },
+    /**
+     * 重置表单，不会触发 search 事件。
+     */
     clean() {
       Util.eachSetResponsive(this.searchData, this.option, "field", "default");
     }
