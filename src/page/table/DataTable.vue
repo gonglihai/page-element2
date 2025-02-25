@@ -101,7 +101,9 @@ export default {
      * 表格行点击选中
      */
     rowClick(row) {
-      this.$refs.table.toggleRowSelection(row);
+      if (this.option.select) {
+        this.$refs.table.toggleRowSelection(row);
+      }
     },
     /**
      * 选中事件冒泡
