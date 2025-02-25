@@ -4,7 +4,7 @@
      @author GongLiHai
  -->
 <template>
-  <el-table-column v-if="col.show != false" :prop="col.field" :label="col.name" :type="col.type" :width="col.width"
+  <el-table-column v-if="col.show != false" :prop="col.field" :label="col.name" :width="col.width"
     :min-width="col.minWidth" :sortable="sortable" :fixed="col.fixed" :align="col.align" :class-name="col.class">
     <!-- 无子列, 渲染插槽 -->
     <template v-if="!col.children || !col.children.length" v-slot="scope">
