@@ -6,7 +6,7 @@
     <!-- 数据表格 -->
     <el-table v-if="tableShow" v-loading="loading" :data="tableData" ref="table" @row-click="rowClick"
       @selection-change="handleSelectionChange" :row-key="option.rowKey" :default-expand-all="option.defaultExpandAll"
-      :border="option.border" height="100%" :size="size">
+      :border="isAbsentTrue(option.border)" :stripe="option.stripe" height="100%" :size="size">
 
       <!-- 行选择器 checkbox -->
       <el-table-column v-if="option.select" type="selection" :align="'center'" />
