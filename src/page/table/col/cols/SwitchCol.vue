@@ -9,6 +9,8 @@
     api            String                 快捷发送 Post 请求, 请求参数为 [key] 与 value, key 为 idKey 指定的 唯一key (默认为: id), value 为 switch 切换后的新值
     idKey          String                 与行数据中取值的字段名, Post 请求的 [key] idKey 指定的 唯一key 的参数名
                                           例如 配置 col.idKey: code 则代表, 请求中 唯一key 的参数名为 code, 唯一key 的值从 行数据中名为 code 的字段中取( row[idKey] )
+    valueKey       String                 请求的 value 的参数名, 默认为 col.field
+    hidden         Function               是否隐藏开关, 传入参数为 scope, col, 返回 true 时隐藏开关
 -->
 <template>
   <!-- @click.stop 阻止事件向上传播, 导致 表格下拉框选中问题 -->
@@ -36,7 +38,7 @@ export default {
       // 内部 api 请求
       if (col.api) {
         const idKey = Util.ifAbsentDefault(col.idKey, "id");
-        const idValue = scope.row[idKey]; // 问题点: id 值获取应进行 fmt 函数判断
+        const idValue = scope.row[idKey];
         const valueKey = Util.ifAbsentDefault(col.valueKey, col.field);
         api
           .post(col.api, {
