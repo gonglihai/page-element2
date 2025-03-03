@@ -20,7 +20,7 @@
                 row: 行数据
                 index: 行序号
                 col: 列配置
-                scope: element-ui 表格列插槽原始参数, 在 Detail 下 为 null
+                scope: element-ui 表格列插槽原始参数
               }
             -->
           <slot v-bind="slotParam" :name="colSlot"></slot>
