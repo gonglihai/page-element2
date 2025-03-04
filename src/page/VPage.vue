@@ -65,6 +65,7 @@ import DataTable from "./table/DataTable.vue";
 import Util from "./util.js";
 import api from "./api/index.js";
 import FoldContainer from "./fold/FoldContainer.vue";
+import { config } from "./config/index.js";
 
 export default {
   components: {
@@ -115,7 +116,7 @@ export default {
         case "field": // 单字段默认
         default: {
           const f = this.option.tree && this.option.tree.props && this.option.tree.props.value;
-          this.searchData[this.option.tree.field] = treeNode ? treeNode[f || "id"] : undefined;
+          this.searchData[this.option.tree.field] = treeNode ? treeNode[f || config.tree.props.value] : undefined;
         }
       }
     },

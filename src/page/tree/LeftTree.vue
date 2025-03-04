@@ -84,7 +84,7 @@ export default {
       filter: "", // 搜索输入框的value
       fold: false, // 折叠展开状态
       data: null, // 树数据
-      // 树配置
+      // 属性名映射
       props: this.buildProps(),
       checkData: null, // 点击后选择的数据
       addRoot: this.option.addRoot, // 是否向数据添加根节点
@@ -101,19 +101,12 @@ export default {
   },
   methods: {
     buildProps() {
-      if (!this.option || !this.option.props) {
-        return {
-          label: "name", // 显示标点,名称
-          children: "children", // 子节点
-          value: "id", // 值
-        };
-      }
-      const thisProps = this.option.props;
+      const p = this.option.props || {};
 
       return {
-        label: Util.ifAbsentDefault(thisProps.label, "name"),
-        children: Util.ifAbsentDefault(thisProps.children, "children"),
-        value: Util.ifAbsentDefault(thisProps.value, "id"),
+        label: Util.ifAbsentDefault(p.label, config.tree.props.label),
+        children: Util.ifAbsentDefault(p.children, config.tree.props.children),
+        value: Util.ifAbsentDefault(p.value, config.tree.props.value),
       };
     },
     /**
