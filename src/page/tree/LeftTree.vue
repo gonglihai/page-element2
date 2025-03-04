@@ -2,8 +2,8 @@
   -- @author GongLiHai
  -->
 <template>
-  <FoldContainer class="page-tree" direction="x" name="左侧" :width="option.width">
-    <div :style="{ width: option.width ? option.width : leftTreeWidth }" style="height: 100%;">
+  <FoldContainer class="page-tree" direction="x" name="左侧" :width="width">
+    <div :style="{ width: width }" style="height: 100%;">
       <div style="margin-right: 8px; height: 100%; display: flex; flex-direction: column; flex: none;">
         <!-- 树搜索框 -->
         <div class="page-tree-search">
@@ -72,11 +72,13 @@ export default {
       } else {
         return Util.treeGetIdsAtLevel(this.data, config.treeExpandLevel, this.props.value);
       }
+    },
+    width() {
+      return this.option.width ? this.option.width : config.width;
     }
   },
   data() {
     return {
-      leftTreeWidth: config.leftTreeWidth, // 树宽度
       filter: "", // 搜索输入框的value
       fold: false, // 折叠展开状态
       data: null, // 树数据
