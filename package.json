@@ -6,9 +6,7 @@
     "build": "vue-cli-service build --target lib --name VPage --dest lib src/index.js"
   },
   "main": "lib/VPage.umd.min.js",
-  "dependencies": {
-    "core-js": "^3.8.3"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "element-ui": "^2.15.14",
     "vue": "^2.6.14"

@@ -225,5 +225,21 @@ export default {
       }
     })
     return values;
+  },
+  /**
+ * 对象深度合并
+ * @param {*} target 目标对象
+ * @param {*} source 来源对象
+ * @returns 
+ */
+  objectMerge(target, source) {
+    for (const key in source) {
+      if (source[key] && typeof source[key] === 'object') {
+        target[key] = this.objectMerge(target[key] || {}, source[key]);
+      } else {
+        target[key] = source[key];
+      }
+    }
+    return target;
   }
 };

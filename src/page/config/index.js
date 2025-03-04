@@ -1,6 +1,5 @@
-import _ from 'lodash';
-
 import { defaultConfig } from './default';
+import Util from '../util'
 
 export const config = defaultConfig()
 
@@ -8,5 +7,6 @@ export function setConfig(newConfig) {
   if (!newConfig) {
     return;
   }
-  _.merge(config, newConfig);
+  Util.objectMerge(config, newConfig);
 }
+
