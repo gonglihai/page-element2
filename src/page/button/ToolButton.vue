@@ -4,8 +4,10 @@
 <template>
   <div class="tool-button">
     <slot name="button-start"></slot>
+
     <template v-for="(button, index) in option">
-      <el-button :key="`${button.name}_${index}`" v-if="!isHidden(button)" :type="button.color" :icon="button.icon" size="small" @click="click(button)">
+      <el-button :key="`${button.name}_${index}`" v-if="!isHidden(button)" :type="button.color" :icon="button.icon"
+        :size="size" @click="click(button)">
         {{ button.name }}
       </el-button>
     </template>
@@ -15,6 +17,8 @@
 </template>
 
 <script>
+import { config } from '../config';
+
 export default {
   props: {
     // 配置选项
@@ -30,6 +34,11 @@ export default {
       default() {
         return [];
       }
+    }
+  },
+  data() {
+    return {
+      size: config.button.size
     }
   },
   methods: {

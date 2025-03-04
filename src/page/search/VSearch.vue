@@ -13,36 +13,36 @@
       <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
         :placeholder="placeholder(item)" :option="item.option" :api="item.api" :props="item.props" :group="item.group"
         :multiple="item.multiple" :multipleValueType="item.multipleValueType"
-        :clearable="isAbsentTrue(item.clearable)" />
+        :clearable="isAbsentTrue(item.clearable)" :size="size"/>
       <!-- 日期 -->
       <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
-        type="date" :placeholder="placeholder(item)" :size="'small'"
+        type="date" :placeholder="placeholder(item)" :size="size"
         :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'" :format="item.format || 'yyyy-MM-dd'"
         :clearable="isAbsentTrue(item.clearable)" />
 
       <!-- 日期 范围 -->
       <DateRangeSelect v-else-if="item.type === 'date-range'" :id="labelForId(item)" :form="searchData"
         :field="item.field" :value-format="item.valueFormat" :format="item.format"
-        :clearable="isAbsentTrue(item.clearable)" />
+        :clearable="isAbsentTrue(item.clearable)" :size="size"/>
 
       <!-- 年 -->
       <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
-        type="year" :placeholder="placeholder(item)" :size="'small'" :clearable="isAbsentTrue(item.clearable)"
+        type="year" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
         :value-format="item.valueFormat || 'yyyy'" />
 
       <!-- 年月 -->
       <el-date-picker v-else-if="item.type === 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
-        type="month" :placeholder="placeholder(item)" :size="'small'" :clearable="isAbsentTrue(item.clearable)"
+        type="month" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
         :value-format="item.valueFormat || 'yyyyMM'" />
 
       <!-- 输入框 -->
       <el-input v-else :id="labelForId(item)" v-model="searchData[item.field]" :placeholder="placeholder(item)"
-        size="small" :clearable="isAbsentTrue(item.clearable)" />
+        :size="size" :clearable="isAbsentTrue(item.clearable)" />
     </div>
     <div class="page-search-button">
       <slot name="search-button-start"></slot>
-      <el-button @click="search" type="primary" size="mini" icon="el-icon-search">搜索</el-button>
-      <el-button @click="reset" size="mini" icon="el-icon-refresh">重置</el-button>
+      <el-button @click="search" type="primary" :size="size" icon="el-icon-search">搜索</el-button>
+      <el-button @click="reset" :size="size" icon="el-icon-refresh">重置</el-button>
       <slot name="search-button-end"></slot>
     </div>
   </div>
@@ -52,6 +52,7 @@
 import Util from "../util.js";
 import ApiSelect from "./ApiSelect.vue";
 import DateRangeSelect from './DateRangeSelect.vue';
+import { config } from '../config';
 
 const SEARCH_ID_PREFIX = "search";
 let SEARCH_ID = 0; // 组件唯一id
@@ -77,6 +78,7 @@ export default {
   data() {
     return {
       searchId: SEARCH_ID++, // id
+      size: config.search.size
     };
   },
   methods: {
@@ -172,6 +174,7 @@ export default {
   align-items: center;
   flex-grow: 1;
   margin-left: 4px;
+  margin-bottom: 4px;
   padding-left: 4px;
 }
 

@@ -1,6 +1,11 @@
-// todo 优化为 search, tree, table, button, 等对象分开
 export function defaultConfig() {
   return {
+    search: {
+      size: 'small'             // 表单项和查询/重置按钮的大小
+    },
+    button: {
+      size: 'small',            // 按钮大小
+    },
     table: {
       rowClickSelect: false,    // 行点击选中
       size: 'small',            // 默认表格大小
