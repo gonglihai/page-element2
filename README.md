@@ -6,5 +6,7 @@
 [Github](https://github.com/gonglihai/page-element2)
 
 
-[使用文档](https://github.com/gonglihai/page-element2-doc)
+[文档](https://page-element2.glh.red/)
 
+
+[示例](https://page-element2-example.glh.red/#/)
