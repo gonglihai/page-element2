@@ -6,6 +6,10 @@ export function defaultConfig() {
     },
     tree: {
       width: '300px',       // 树宽度
+      expandLevel: 1,       // 树展开级别
+      response: (r) => {    // 树数据请求响应处理
+        return r.data;
+      },
     },
     page: {
       pageNumber: 'pageNo', // 页码
@@ -19,10 +23,5 @@ export function defaultConfig() {
       }
     },
     tableSize: 'small', // 默认表格大小
-    // 树数据请求响应处理
-    treeResponse: (response) => {
-      return response.data;
-    },
-    treeExpandLevel: 1, // 树展开级别
   }
 }

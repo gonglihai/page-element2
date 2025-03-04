@@ -67,14 +67,16 @@ export default {
     // 默认展开的key集合
     defaultExpandedKeys() {
       // 指定了展开级别, 从 1 级开始
-      if (this.option.expandLevel) {
-        return Util.treeGetIdsAtLevel(this.data, this.option.expandLevel, this.props.value);
-      } else {
-        return Util.treeGetIdsAtLevel(this.data, config.treeExpandLevel, this.props.value);
+      const expandLevel = this.option.expandLevel || config.tree.expandLevel;
+      if (expandLevel == 0) {
+        return;
       }
+      const ids = Util.treeGetIdsAtLevel(this.data, expandLevel, this.props.value);
+      return ids;
     },
+    // 树宽度
     width() {
-      return this.option.width ? this.option.width : config.width;
+      return this.option.width ? this.option.width : config.tree.width;
     }
   },
   data() {
@@ -149,8 +151,8 @@ export default {
               return;
             }
             // 从配置中获取数据
-            if (config.treeResponse) {
-              this.decideAddRoot(config.treeResponse(r));
+            if (config.tree.response) {
+              this.decideAddRoot(config.tree.response(r));
               return;
             }
           });

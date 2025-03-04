@@ -15,7 +15,6 @@
 </template>
 <script>
 import FoldButton from "./FoldButton.vue";
-import { config } from "../config";
 
 export default {
   components: {
@@ -35,7 +34,6 @@ export default {
     // 当方向为 x 水平时, 容器宽度
     width: {
       type: String,
-      default: () => config.tree.width
     }
   },
   data() {
