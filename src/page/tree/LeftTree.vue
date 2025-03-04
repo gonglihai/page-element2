@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     checkDataName() {
-      return this.checkData && this.checkData[this.props.label] ? this.checkData[this.props.label] : '无'
+      return this.checkData && this.checkData[this.props.label] ? this.checkData[this.props.label] + '' : '无'
     },
     // 默认展开的key集合
     defaultExpandedKeys() {
