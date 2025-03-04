@@ -153,7 +153,7 @@ export default {
       // 复制 search
       param = Object.assign(param, search);
 
-      console.log('search', search, this.option.param)
+      console.log('search: ', search, 'option.param: ', this.option.param)
 
       // 参数过滤器
       if (this.option.paramFilter && typeof this.option.paramFilter == 'function') {
@@ -171,8 +171,8 @@ export default {
             return;
           }
           // 从配置中获取数据
-          if (config.dataTableResponse) {
-            data = config.dataTableResponse(r);
+          if (config.table.response) {
+            data = config.table.response(r);
             this.setTableData(data[this.tableProps.data], data[this.tableProps.total]);
             return;
           }
@@ -211,25 +211,25 @@ export default {
     /**
      * 分页请求参数、响应数据与总数key
      * {
-     *   page: config.page.pageNumber,   // 请求参数, 页码的 key 名
-     *   limit: config.page.pageSize, // 请求参数, 页大小的 key 名
-     *   data: 'rows',      // 响应, 数据 key名
-     *   total: 'total'     // 响应, 数据总条数
+     *   page: config.table.page.pageNumber, // 请求参数, 页码的 key 名
+     *   limit: config.table.page.pageSize,  // 请求参数, 页大小的 key 名
+     *   data: config.table.page.data,       // 响应, 数据 key名
+     *   total: config.table.page.total      // 响应, 数据总条数
      * }
      */
     tableProps() {
       const propsDefault = {
-        page: config.page.pageNumber,
-        limit: config.page.pageSize,
-        data: 'rows',
-        total: 'total',
+        page: config.table.page.pageNumber,
+        limit: config.table.page.pageSize,
+        data: config.table.props.data,
+        total: config.table.props.total,
       };
       Object.assign(propsDefault, this.option.props);
       return propsDefault
     },
     // 表格大小
     size() {
-      return this.option.size ? this.option.size : config.tableSize;
+      return this.option.size ? this.option.size : config.table.size;
     }
   },
   watch: {
