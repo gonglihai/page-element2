@@ -101,7 +101,8 @@ export default {
      * 表格行点击选中
      */
     rowClick(row) {
-      if (this.option.select) {
+      const rowClickSelect = config.table.rowClickSelect || this.option.rowClickSelect;
+      if (rowClickSelect && this.option.select) {
         this.$refs.table.toggleRowSelection(row);
       }
     },

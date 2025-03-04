@@ -1,5 +1,9 @@
+// todo 优化为 search, tree, table, button, 等对象分开
 export function defaultConfig() {
   return {
+    table: {
+      rowClickSelect: true, // 行点击选中
+    },
     leftTreeWidth: '300px', // 左侧树默认宽度
     page: {
       pageNumber: 'pageNo', // 页码
