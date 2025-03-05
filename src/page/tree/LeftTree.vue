@@ -50,7 +50,7 @@ import Util from "../util.js";
 export default {
   components: { FoldContainer },
   created() {
-    this.setTreeDataSource();
+    this.reloadData();
   },
   props: {
     option: {
@@ -123,7 +123,7 @@ export default {
      * 设置 树 数据
      * 优先顺序: option.data > option.api
      */
-    setTreeDataSource() {
+     reloadData() {
       if (this.option.data) {
         this.decideAddRoot(this.option.data);
         return;
