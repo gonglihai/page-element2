@@ -1,6 +1,45 @@
 # 变更日志 Changelog
 
-## [0.1.26] - 2025-02-25
+## [0.2.0] - 2025-03-05
+
+### ✨ 新增
+
+- 表格列类型扩展混入(`Mixin`)导出
+- 全局配置增加 `table.colType` 列类型配置, 添加自定义列类型
+- 表格分页左右增加插槽, `table-page-start` 分页之前、`table-page-end` 分页之后
+- 操作按钮和查询条件 `size` 大小配置
+- 数据表格行点击, `rowClickSelect` 取消选中配置
+- 查询条件打印格式化
+
+
+
+### 🛠️ 变更
+
+- 全局配置 数据表格相关配置迁移到 table 下
+  - `page` => `table.page`
+  - `dataTableResponse` => `table.response`
+  - `tableSize` => `table.size`
+- 全局配置 tree 左侧树配置迁移
+  - 新增 prop 属性名映射
+  - `treeExpandLevel` => `tree.expandLevel`
+  - `treeResponse` => `tree.response`
+  - `leftTreeWidth` => `tree.width`
+
+
+
+### 🐞 修复
+
+- 左侧树选中的 label 不是字符串时, el-tooltip content 报错问题
+
+
+
+### 🏗️ 构建
+
+- 缩减体积, 减少无用依赖
+
+
+
+## [0.1.26] - 2025-03-05
 
 ### ✨ 新增
 
