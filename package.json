@@ -42,7 +42,6 @@
   ],
   "files": [
     "lib/VPage.umd.js",
-    "lib/VPage.common.js.map",
     "lib/VPage.umd.min.js",
     "lib/VPage.umd.min.js.map"
   ]
