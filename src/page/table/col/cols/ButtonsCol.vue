@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import ColMixin from "../ColMixin.js";
+import TableColMixin from "../TableColMixin.js";
 import Util from "../../../util.js";
 
 export default {
-  mixins: [ColMixin],
+  mixins: [TableColMixin],
   methods: {
     click(button) {
       // click 普通点击

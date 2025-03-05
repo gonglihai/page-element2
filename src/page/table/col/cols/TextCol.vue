@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import ColMixin from "../ColMixin.js";
+import TableColMixin from "../TableColMixin.js";
 
 export default {
-  mixins: [ColMixin],
+  mixins: [TableColMixin],
 };
 </script>

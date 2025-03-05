@@ -1,3 +1,5 @@
+import TableColTypes from "../table/col/TableColTypesRegister";
+
 export function defaultConfig() {
   return {
     search: {
@@ -22,7 +24,8 @@ export function defaultConfig() {
       props: {
         data: 'rows',           // 响应, 数据行的字段名
         total: 'total'          // 响应, 数据总条数的字段名
-      }
+      },
+      colType: TableColTypes    // 默认列类型
     },
     tree: {
       width: '300px',           // 树宽度

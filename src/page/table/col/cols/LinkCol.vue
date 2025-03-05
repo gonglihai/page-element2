@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import ColMixin from "../ColMixin.js";
+import TableColMixin from "../TableColMixin.js";
 import Util from "../../../util.js";
 
 export default {
-  mixins: [ColMixin],
+  mixins: [TableColMixin],
   computed: {
     type() {
       return Util.ifAbsentDefault(this.col.color, "primary");

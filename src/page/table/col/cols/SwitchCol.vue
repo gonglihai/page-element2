@@ -23,10 +23,10 @@
 <script>
 import Util from "../../../util.js";
 import api from "../../../api/index.js";
-import ColMixin from "../ColMixin.js";
+import TableColMixin from "../TableColMixin.js";
 
 export default {
-  mixins: [ColMixin],
+  mixins: [TableColMixin],
   methods: {
     change(newVal) {
       const col = this.col;

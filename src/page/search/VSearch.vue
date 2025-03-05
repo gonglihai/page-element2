@@ -12,8 +12,8 @@
       <!-- 下拉框 -->
       <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
         :placeholder="placeholder(item)" :option="item.option" :api="item.api" :props="item.props" :group="item.group"
-        :multiple="item.multiple" :multipleValueType="item.multipleValueType"
-        :clearable="isAbsentTrue(item.clearable)" :size="size"/>
+        :multiple="item.multiple" :multipleValueType="item.multipleValueType" :clearable="isAbsentTrue(item.clearable)"
+        :size="size" />
       <!-- 日期 -->
       <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
         type="date" :placeholder="placeholder(item)" :size="size"
@@ -23,7 +23,7 @@
       <!-- 日期 范围 -->
       <DateRangeSelect v-else-if="item.type === 'date-range'" :id="labelForId(item)" :form="searchData"
         :field="item.field" :value-format="item.valueFormat" :format="item.format"
-        :clearable="isAbsentTrue(item.clearable)" :size="size"/>
+        :clearable="isAbsentTrue(item.clearable)" :size="size" />
 
       <!-- 年 -->
       <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"

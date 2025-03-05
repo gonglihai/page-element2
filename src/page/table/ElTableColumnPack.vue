@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import ColTypes from "./col/ColTypesRegister.js";
+import { config } from '../config';
 import Util from "../util.js";
 
 export default {
@@ -67,7 +67,7 @@ export default {
      * 返回 col.type 所对应的列类型
      */
     colType() {
-      const r = ColTypes[Util.ifAbsentDefault(this.col.type, "text")];
+      const r = config.table.colType[Util.ifAbsentDefault(this.col.type, "text")];
       if (r) {
         return r;
       }

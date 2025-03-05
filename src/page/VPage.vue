@@ -51,6 +51,12 @@
           <slot :value="value" :row="row" :index="index" :col="col" :scope="scope" :name="colSlot">
           </slot>
         </template>
+        <template #table-page-start>
+          <slot name="table-page-start"></slot>
+        </template>
+        <template #table-page-end>
+          <slot name="table-page-end"></slot>
+        </template>
       </data-table>
     </div>
   </div>

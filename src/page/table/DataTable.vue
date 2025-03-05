@@ -30,9 +30,11 @@
 
     <!-- 分页 -->
     <div class="page-table-bottom" v-if="isAbsentTrue(option.pagination)">
+      <slot name="table-page-start"></slot>
       <el-pagination class="page-table-pagination" :total="page.total" :page-size.sync="page.limit"
         :current-page.sync="page.page" :page-sizes="pageSizes" @size-change="reloadData()"
         @current-change="reloadData()" layout="total, sizes, prev, pager, next, jumper" />
+      <slot name="table-page-end"></slot>
     </div>
   </div>
 </template>
@@ -248,13 +250,13 @@ export default {
 }
 
 .page-table-bottom {
+  padding-top: 4px;
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .page-table-pagination {
-  margin-top: 4px;
+  flex: none;
 }
 </style>

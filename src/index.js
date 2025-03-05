@@ -37,3 +37,7 @@ export default {
   // 以下是具体的组件列表
   ...vpageComponents
 }
+
+// 表格列类型扩展混入
+import TableColMixin from './page/table/col/TableColMixin';
+export { TableColMixin };
