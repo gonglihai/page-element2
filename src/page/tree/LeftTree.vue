@@ -123,7 +123,7 @@ export default {
      * 设置 树 数据
      * 优先顺序: option.data > option.api
      */
-     reloadData() {
+    reloadData() {
       if (this.option.data) {
         this.decideAddRoot(this.option.data);
         return;
@@ -183,6 +183,21 @@ export default {
         ];
       } else {
         this.data = treeData;
+      }
+
+
+      // 当前已有选中数据, 树数据改变, 判断选中数据是否存在, 不存在触发 treeClick 点击事件冒泡, 存在设置 tree 当前选中
+      if (this.checkData) {
+        const f = this.props.value;
+        const key = this.checkData[f];
+        const newCheckData = Util.treeSearchFirst(this.data, (item) => item[f] == key);
+        if (!newCheckData) {
+          this.treeClick(null);
+        } else {
+          this.$nextTick(() => {
+            this.$refs.tree.setCurrentKey(key);
+          })
+        }
       }
     },
     /**
