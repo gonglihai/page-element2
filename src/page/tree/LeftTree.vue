@@ -2,8 +2,8 @@
   -- @author GongLiHai
  -->
 <template>
-  <FoldContainer class="page-tree" direction="x" name="左侧" :width="width">
-    <div :style="{ width: width }" style="height: 100%;">
+  <FoldContainer class="page-tree" direction="x" name="左侧" :width="c.width">
+    <div :style="{ width: c.width }" style="height: 100%;">
       <div style="margin-right: 8px; height: 100%; display: flex; flex-direction: column; flex: none;">
         <!-- 树搜索框 -->
         <div class="page-tree-search">
@@ -17,9 +17,13 @@
         </div>
         <!-- 树 -->
         <div class="page-tree-container">
-          <el-tree :data="data" :props="props" ref="tree" :filter-node-method="filterNode" @node-click="treeClick"
-            :expand-on-click-node="false" :default-expand-all="option.expand" :node-key="props.value"
-            :default-expanded-keys="defaultExpandedKeys">
+          <el-tree ref="tree" :data="data" :filter-node-method="filterNode" @node-click="treeClick"
+            :expand-on-click-node="false" :default-expand-all="c.expand" :node-key="c.valueField"
+            :default-expanded-keys="defaultExpandedKeys" :props="{
+              label: c.labelField,
+              value: c.valueField,
+              children: c.childrenField
+            }">
             <!-- 节点作用域插槽 -->
             <template slot-scope="{ node, data }">
               <slot name="tree-node" :node="node" :data="data">
@@ -62,53 +66,40 @@ export default {
   },
   computed: {
     checkDataName() {
-      return this.checkData && this.checkData[this.props.label] ? this.checkData[this.props.label] + '' : '无'
+      return this.checkData && this.checkData[this.c.labelField] ? this.checkData[this.c.labelField] + '' : '无'
     },
     // 默认展开的key集合
     defaultExpandedKeys() {
       // 指定了展开级别, 从 1 级开始
-      const expandLevel = this.option.expandLevel || config.tree.expandLevel;
+      const expandLevel = this.c.expandLevel;
       if (expandLevel == 0) {
         return;
       }
-      const ids = Util.treeGetIdsAtLevel(this.data, expandLevel, this.props.value);
+      const ids = Util.treeGetIdsAtLevel(this.data, expandLevel, this.c.valueField);
       return ids;
     },
-    // 树宽度
-    width() {
-      return this.option.width ? this.option.width : config.tree.width;
+    // 配置
+    c() {
+      return Util.fieldMerge(this.option, config.tree, ['labelField', 'valueField', 'childrenField', 'width', 'expandLevel', 'response', 'expand', 'addRoot', 'rootName', 'rootValue']);
     }
   },
   data() {
     return {
-      filter: "", // 搜索输入框的value
-      fold: false, // 折叠展开状态
-      data: null, // 树数据
-      // 属性名映射
-      props: this.buildProps(),
-      checkData: null, // 点击后选择的数据
-      addRoot: this.option.addRoot, // 是否向数据添加根节点
-      rootName: this.option.rootName || "全部", // 当 addRoot 为 true 时, 根节点显示名称
+      filter: "",       // 搜索输入框的value
+      fold: false,      // 折叠展开状态
+      data: null,       // 树数据
+      checkData: null,  // 点击后选择的数据
     };
   },
   watch: {
     /**
-     * 输入框value 改变, 过滤树节点
+     * 输入框 value 改变, 过滤树节点
      */
     filter(val) {
       this.$refs.tree.filter(val);
     },
   },
   methods: {
-    buildProps() {
-      const p = this.option.props || {};
-
-      return {
-        label: Util.ifAbsentDefault(p.label, config.tree.props.label),
-        children: Util.ifAbsentDefault(p.children, config.tree.props.children),
-        value: Util.ifAbsentDefault(p.value, config.tree.props.value),
-      };
-    },
     /**
      * 树过滤函数
      * @param value 值
@@ -117,7 +108,7 @@ export default {
      */
     filterNode(value, data) {
       if (!value) return true;
-      return data[this.props.label].indexOf(value) !== -1;
+      return data[this.c.labelField].indexOf(value) !== -1;
     },
     /**
      * 设置 树 数据
@@ -139,15 +130,7 @@ export default {
           // api 是 字符串, 发起请求
           api.get(this.option.api).then((r) => {
             // 响应处理器
-            if (this.option.response) {
-              this.decideAddRoot(this.option.response(r));
-              return;
-            }
-            // 从配置中获取数据
-            if (config.tree.response) {
-              this.decideAddRoot(config.tree.response(r));
-              return;
-            }
+            this.decideAddRoot(this.c.response(r));
           });
           return;
         case 'function': {
@@ -174,11 +157,12 @@ export default {
      * 决定是否添加根节点
      */
     decideAddRoot(treeData) {
-      if (this.addRoot) {
+      if (this.c.addRoot) {
         this.data = [
           {
-            [this.props.label]: Util.ifAbsentDefault(this.rootName, "全部"),
-            [this.props.children]: treeData,
+            [this.c.labelField]: this.c.rootName,
+            [this.c.valueField]: this.c.rootValue,
+            [this.c.childrenField]: treeData,
           },
         ];
       } else {
@@ -188,7 +172,7 @@ export default {
 
       // 当前已有选中数据, 树数据改变, 判断选中数据是否存在, 不存在触发 treeClick 点击事件冒泡, 存在设置 tree 当前选中
       if (this.checkData) {
-        const f = this.props.value;
+        const f = this.c.valueField;
         const key = this.checkData[f];
         const newCheckData = Util.treeSearchFirst(this.data, (item) => item[f] == key);
         if (!newCheckData) {
@@ -224,7 +208,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .page-tree-search {
   flex-shrink: 0;
   display: flex;
@@ -234,22 +218,6 @@ export default {
   flex-grow: 1;
   overflow: auto;
   margin: 4px 0;
-}
-
-.page-tree-container .el-tree-node>.el-tree-node__content {
-  border-radius: 5px;
-  margin-right: 4px;
-  transition: all 0.3s;
-}
-
-/* 树选中蓝色背景 */
-.page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content {
-  background-color: #1890ff;
-  color: white;
-}
-
-.page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content:hover {
-  background-color: #46a6ff;
 }
 
 .page-tree-select {
@@ -269,5 +237,22 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+</style>
+<style>
+/* 树选中蓝色背景 */
+.page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content {
+  background-color: #1890ff;
+  color: white;
+}
+
+.page-tree-container .el-tree-node.is-current.is-focusable>.el-tree-node__content:hover {
+  background-color: #46a6ff;
+}
+
+.page-tree-container .el-tree-node>.el-tree-node__content {
+  border-radius: 5px;
+  margin-right: 4px;
+  transition: all 0.3s;
 }
 </style>

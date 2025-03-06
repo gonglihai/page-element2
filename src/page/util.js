@@ -253,7 +253,7 @@ export default {
   fieldMerge(source1 = {}, source2 = {}, fieldNameArray = []) {
     const r = {};
 
-    fieldNameArray.forEach(fieldName => r[fieldName] = (source1[fieldName] == undefined ? source2[fieldName] : source1[fieldName]));
+    fieldNameArray.forEach(fieldName => r[fieldName] = this.ifAbsentDefault(source1[fieldName], source2[fieldName]));
 
     return r;
   }

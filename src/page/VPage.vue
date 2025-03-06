@@ -121,8 +121,8 @@ export default {
           break;
         case "field": // 单字段默认
         default: {
-          const f = this.option.tree && this.option.tree.props && this.option.tree.props.value;
-          this.searchData[this.option.tree.field] = treeNode ? treeNode[f || config.tree.props.value] : undefined;
+          const f = Util.ifAbsentDefault(this.option.tree.valueField, config.tree.valueField);
+          this.searchData[this.option.tree.field] = treeNode ? treeNode[f] : undefined;
         }
       }
     },

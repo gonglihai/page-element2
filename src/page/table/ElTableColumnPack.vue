@@ -81,7 +81,7 @@ export default {
      * 是否排序
      */
     sortable() {
-      const sortable = this.col.sortable == undefined ? config.table.sortable : this.col.sortable;
+      const sortable = Util.ifAbsentDefault(this.col.sortable, config.table.sortable);
       return sortable && !this.col.children;
     },
   },

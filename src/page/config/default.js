@@ -19,7 +19,7 @@ export function defaultConfig() {
       stripe: false,            // 是否开启斑马纹
       select: true,             // 是否开启 checkbox 选择器
       rowClickSelect: false,    // 是否开启行点击选中
-      
+
       border: false,            // 是否显示竖边框(多级表头强制开启)
       defaultExpandAll: false,  // 树形表格, 默认展开全部
       size: 'small',            // 默认表格大小
@@ -35,15 +35,15 @@ export function defaultConfig() {
     },
     tree: {
       width: '300px',           // 树宽度
+      expand: false,            // 默认展开全部
       expandLevel: 1,           // 树展开级别
-      response: (r) => {        // 树数据请求响应处理
-        return r.data;
-      },
-      props: {
-        label: 'name',          // 树节点显示字段名
-        value: 'id',            // 树节点值字段名
-        children: 'children',   // 树子节点字段名
-      }
+      response: (r) => r.data,  // 树数据请求响应处理
+      labelField: 'name',       // 树节点显示字段名
+      valueField: 'id',         // 树节点值字段名
+      childrenField: 'children',// 树子节点字段名
+      addRoot: false,           // 是否向数据添加根节点
+      rootName: '全部',         // 添加的根节点显示名称
+      rootValue: undefined,     // 添加的根节点的值
     },
   }
 }
