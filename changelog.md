@@ -4,7 +4,7 @@
 ### ✨ 新增
 
 - 数据表格相关全局配置
-  - `page.pageSizes` 页码选项
+  - `pageSizes` 页码选项
   - `stripe` 斑马纹
   - `select` 是否开启 checkbox 选择器
   - `rowClickSelect` 是否开启行点击选中
@@ -19,6 +19,7 @@
 ### 🛠️ 变更
 
 - 左侧树方法名变更, 从 `setTreeDataSource` 修改为 `reloadData`
+- 数据表格全局配置 `page`、`props` 移除层级
 
 
 

@@ -31,9 +31,10 @@
     <!-- 分页 -->
     <div class="page-table-bottom" v-if="c.pagination">
       <slot name="table-page-start"></slot>
-      <el-pagination class="page-table-pagination" :total="page.total" :page-size.sync="page.limit"
-        :current-page.sync="page.page" :page-sizes="pageSizes" @size-change="() => { page.page = 1; reloadData() }"
-        @current-change="reloadData()" layout="total, sizes, prev, pager, next, jumper" />
+      <el-pagination class="page-table-pagination" :total="page.total" :page-size.sync="page.pageSize"
+        :current-page.sync="page.pageNumber" :page-sizes="c.pageSizes"
+        @size-change="() => { page.pageNumber = 1; reloadData() }" @current-change="reloadData()"
+        layout="total, sizes, prev, pager, next, jumper" />
       <slot name="table-page-end"></slot>
     </div>
   </div>
@@ -77,15 +78,14 @@ export default {
     },
   },
   data() {
-    const pageSizes = this.option.pageSizes || config.table.page.pageSizes;
+    const pageSizes = this.option.pageSizes || config.table.pageSizes;
 
     return {
-      pageSizes,              // 页码选项
       tableData: [],          // 表格数据
       page: {
         total: 0,             // 总条数
-        limit: pageSizes[0],  // 单页大小
-        page: 1,              // 页码
+        pageSize: pageSizes[0],  // 单页大小
+        pageNumber: 1,        // 页码
       },
       search: {},             // 查询条件缓存
       loading: true,
@@ -94,7 +94,6 @@ export default {
     };
   },
   methods: {
-    isAbsentTrue: util.isAbsentTrue,
     /**
      * 表格行点击选中
      */
@@ -129,14 +128,14 @@ export default {
       // 无查询条件时, 使用旧的查询条件 (分页组件的 size-change, current-change 事件调用)
       if (search) {
         this.search = search;
-        this.page.page = 1;
+        this.page.pageNumber = 1;
       } else {
         search = this.search;
       }
       // 分页
       if (this.c.pagination !== false) {
-        search[this.tableProps.page] = this.page.page;
-        search[this.tableProps.limit] = this.page.limit;
+        search[this.c.pageNumber] = this.page.pageNumber;
+        search[this.c.pageSize] = this.page.pageSize;
       }
 
       // api 不存在, 终止请求
@@ -161,7 +160,7 @@ export default {
         .get(this.option.api, param)
         .then((r) => {
           const data = this.c.response(r);
-          this.setTableData(data[this.tableProps.data], data[this.tableProps.total]);
+          this.setTableData(data[this.c.dataField], data[this.c.totalField]);
         })
         .finally(() => {
           this.loading = false;
@@ -194,28 +193,12 @@ export default {
       });
       return r;
     },
-    /**
-     * 分页请求参数、响应数据与总数key
-     * {
-     *   page: config.table.page.pageNumber, // 请求参数, 页码的 key 名
-     *   limit: config.table.page.pageSize,  // 请求参数, 页大小的 key 名
-     *   data: config.table.page.data,       // 响应, 数据 key名
-     *   total: config.table.page.total      // 响应, 数据总条数
-     * }
-     */
-    tableProps() {
-      const propsDefault = {
-        page: config.table.page.pageNumber,
-        limit: config.table.page.pageSize,
-        data: config.table.props.data,
-        total: config.table.props.total,
-      };
-      Object.assign(propsDefault, this.option.props);
-      return propsDefault
-    },
     // 配置
     c() {
-      return util.fieldMerge(this.option, config.table, ['select', 'rowClickSelect', 'pagination', 'border', 'stripe', 'defaultExpandAll', 'size', 'response']);
+      return util.fieldMerge(this.option, config.table, [
+        'select', 'rowClickSelect', 'pagination', 'border',
+        'stripe', 'defaultExpandAll', 'size', 'response',
+        'pageNumber', 'pageSize', 'dataField', 'totalField', 'pageSizes']);
     }
   },
   watch: {

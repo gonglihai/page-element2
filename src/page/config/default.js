@@ -9,30 +9,29 @@ export function defaultConfig() {
       size: 'small',            // 按钮大小
     },
     table: {
-      page: {
-        pageNumber: 'pageNo',   // 请求参数, 页码字段名
-        pageSize: 'pageSize',   // 请求参数, 页大小字段名
-        pageSizes: [20, 50, 100, 200], // 页码选项
-      },
       response: (r) => {        // 数据表格请求响应处理
         return {
-          'rows': r.data,       // 此处 rows 字段名来源于下方 table.props.data 配置的值
-          'total': r.count      // 此处 total 字段名来源于下方 table.props.total 配置的值
+          'rows': r.data,       // 此处 rows 字段名来源于下方 table.dataField 配置的值
+          'total': r.count      // 此处 total 字段名来源于下方 table.totalField 配置的值
         }
-      },
-      props: {
-        data: 'rows',           // 响应, 数据行的字段名
-        total: 'total',         // 响应, 数据总条数的字段名
       },
       colType: TableColTypes,   // 默认列类型
       stripe: false,            // 是否开启斑马纹
       select: true,             // 是否开启 checkbox 选择器
       rowClickSelect: false,    // 是否开启行点击选中
-      pagination: true,         // 是否开启分页
+      
       border: false,            // 是否显示竖边框(多级表头强制开启)
       defaultExpandAll: false,  // 树形表格, 默认展开全部
       size: 'small',            // 默认表格大小
       sortable: false,          // 内置排序
+
+      // 分页相关
+      pagination: true,         // 是否开启分页
+      pageSizes: [20, 50, 100, 200], // 页码选项
+      pageNumber: 'pageNo',     // 请求参数, 页码字段名
+      pageSize: 'pageSize',     // 请求参数, 页大小字段名
+      dataField: 'rows',        // 响应, 数据行的字段名
+      totalField: 'total',      // 响应, 数据数量的字段名
     },
     tree: {
       width: '300px',           // 树宽度
