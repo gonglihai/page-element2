@@ -1,14 +1,33 @@
 # 变更日志 Changelog
 
 ## [0.2.1] - 2025-03-05
+### ✨ 新增
+
+- 数据表格相关全局配置
+  - `page.pageSizes` 页码选项
+  - `stripe` 斑马纹
+  - `select` 是否开启 checkbox 选择器
+  - `rowClickSelect` 是否开启行点击选中
+  - `pagination` 是否开启分页
+  - `border` 是否显示竖边框(多级表头强制开启)
+  - `defaultExpandAll` 树形表格, 默认展开全部
+  - `size` 默认表格大小
+  - `sortable` 内置排序
+
+
+
 ### 🛠️ 变更
 
 - 左侧树方法名变更, 从 `setTreeDataSource` 修改为 `reloadData`
 
 
+
+
 ### 🐞 修复
 
 - 解决左侧树刷新数据后, 已选中数据消失问题
+
+
 
 
 ## [0.2.0] - 2025-03-05

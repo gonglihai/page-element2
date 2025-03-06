@@ -227,19 +227,34 @@ export default {
     return values;
   },
   /**
- * 对象深度合并
+ * 对象深度合并 (数组做为不合并)
  * @param {*} target 目标对象
  * @param {*} source 来源对象
- * @returns 
+ * @returns 合并后的对象
  */
   objectMerge(target, source) {
     for (const key in source) {
-      if (source[key] && typeof source[key] === 'object') {
-        target[key] = this.objectMerge(target[key] || {}, source[key]);
+      const sourceValue = source[key];
+      if (sourceValue && typeof sourceValue === 'object' && !Array.isArray(sourceValue)) {
+        target[key] = this.objectMerge(target[key] || {}, sourceValue);
       } else {
-        target[key] = source[key];
+        target[key] = sourceValue;
       }
     }
     return target;
+  },
+  /**
+   * 字段合并
+   * @param {*} source1 来源对象1
+   * @param {*} source2 来源对象2
+   * @param {*} fieldArray 属性名数组
+   * @returns 合并后的对象
+   */
+  fieldMerge(source1 = {}, source2 = {}, fieldNameArray = []) {
+    const r = {};
+
+    fieldNameArray.forEach(fieldName => r[fieldName] = (source1[fieldName] == undefined ? source2[fieldName] : source1[fieldName]));
+
+    return r;
   }
 };

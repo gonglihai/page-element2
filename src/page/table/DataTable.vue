@@ -5,11 +5,11 @@
   <div class="page-table">
     <!-- 数据表格 -->
     <el-table v-if="tableShow" v-loading="loading" :data="tableData" ref="table" @row-click="rowClick"
-      @selection-change="handleSelectionChange" :row-key="option.rowKey" :default-expand-all="option.defaultExpandAll"
-      :border="isAbsentTrue(option.border)" :stripe="option.stripe" height="100%" :size="size">
+      @selection-change="handleSelectionChange" :row-key="option.rowKey" :default-expand-all="c.defaultExpandAll"
+      :border="c.border" :stripe="c.stripe" height="100%" :size="c.size">
 
       <!-- 行选择器 checkbox -->
-      <el-table-column v-if="option.select" type="selection" :align="'center'" />
+      <el-table-column v-if="c.select" type="selection" :align="'center'" />
 
       <el-table-column-pack v-for="(col, idx) in option.col" :key="`${col.field}_${idx}`" :col="col">
         <template v-for="colSlot in tableColSlots" v-slot:[colSlot]="slotParam">
@@ -29,10 +29,10 @@
     </el-table>
 
     <!-- 分页 -->
-    <div class="page-table-bottom" v-if="isAbsentTrue(option.pagination)">
+    <div class="page-table-bottom" v-if="c.pagination">
       <slot name="table-page-start"></slot>
       <el-pagination class="page-table-pagination" :total="page.total" :page-size.sync="page.limit"
-        :current-page.sync="page.page" :page-sizes="pageSizes" @size-change="reloadData()"
+        :current-page.sync="page.page" :page-sizes="pageSizes" @size-change="() => { page.page = 1; reloadData() }"
         @current-change="reloadData()" layout="total, sizes, prev, pager, next, jumper" />
       <slot name="table-page-end"></slot>
     </div>
@@ -68,13 +68,6 @@ export default {
         return [];
       },
     },
-    // 单页大小, 选项框
-    pageSizes: {
-      type: Array,
-      default() {
-        return [20, 50, 100, 200];
-      },
-    },
     // 表格初始化加载查询条件
     initSearch: {
       type: Object,
@@ -84,16 +77,19 @@ export default {
     },
   },
   data() {
+    const pageSizes = this.option.pageSizes || config.table.page.pageSizes;
+
     return {
-      tableData: [], // 表格数据
+      pageSizes,              // 页码选项
+      tableData: [],          // 表格数据
       page: {
-        total: 0, // 总条数
-        limit: this.pageSizes[0], // 单页大小
-        page: 1, // 页码
+        total: 0,             // 总条数
+        limit: pageSizes[0],  // 单页大小
+        page: 1,              // 页码
       },
-      search: {}, // 查询条件缓存
+      search: {},             // 查询条件缓存
       loading: true,
-      tableShow: true, // 表格重渲染
+      tableShow: true,        // 表格重渲染
       columnSlotNamePrefix: "table-col-", // 表格列插槽名前缀
     };
   },
@@ -103,8 +99,7 @@ export default {
      * 表格行点击选中
      */
     rowClick(row) {
-      const rowClickSelect = config.table.rowClickSelect || this.option.rowClickSelect;
-      if (rowClickSelect && this.option.select) {
+      if (this.c.rowClickSelect && this.c.select) {
         this.$refs.table.toggleRowSelection(row);
       }
     },
@@ -139,7 +134,7 @@ export default {
         search = this.search;
       }
       // 分页
-      if (this.option.pagination !== false) {
+      if (this.c.pagination !== false) {
         search[this.tableProps.page] = this.page.page;
         search[this.tableProps.limit] = this.page.limit;
       }
@@ -165,19 +160,8 @@ export default {
       api
         .get(this.option.api, param)
         .then((r) => {
-          let data = r;
-          // 响应处理器
-          if (this.option.response) {
-            data = this.option.response(r);
-            this.setTableData(data[this.tableProps.data], data[this.tableProps.total]);
-            return;
-          }
-          // 从配置中获取数据
-          if (config.table.response) {
-            data = config.table.response(r);
-            this.setTableData(data[this.tableProps.data], data[this.tableProps.total]);
-            return;
-          }
+          const data = this.c.response(r);
+          this.setTableData(data[this.tableProps.data], data[this.tableProps.total]);
         })
         .finally(() => {
           this.loading = false;
@@ -229,9 +213,9 @@ export default {
       Object.assign(propsDefault, this.option.props);
       return propsDefault
     },
-    // 表格大小
-    size() {
-      return this.option.size ? this.option.size : config.table.size;
+    // 配置
+    c() {
+      return util.fieldMerge(this.option, config.table, ['select', 'rowClickSelect', 'pagination', 'border', 'stripe', 'defaultExpandAll', 'size', 'response']);
     }
   },
   watch: {
