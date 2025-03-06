@@ -72,7 +72,7 @@ export default {
     defaultExpandedKeys() {
       // 指定了展开级别, 从 1 级开始
       const expandLevel = this.c.expandLevel;
-      if (expandLevel == 0) {
+      if (this.c.expand || expandLevel == 0) {
         return;
       }
       const ids = Util.treeGetIdsAtLevel(this.data, expandLevel, this.c.valueField);
