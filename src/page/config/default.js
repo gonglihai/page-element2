@@ -23,7 +23,6 @@ export function defaultConfig() {
       border: false,            // 是否显示竖边框(多级表头强制开启)
       defaultExpandAll: false,  // 树形表格, 默认展开全部
       size: 'small',            // 默认表格大小
-      sortable: false,          // 内置排序
 
       // 分页相关
       pagination: true,         // 是否开启分页
@@ -32,6 +31,10 @@ export function defaultConfig() {
       pageSize: 'pageSize',     // 请求参数, 页大小字段名
       dataField: 'rows',        // 响应, 数据行的字段名
       totalField: 'total',      // 响应, 数据数量的字段名
+
+      // 排序
+      orderField: 'orderBy',    // 请求参数, 排序字段名
+      orderBy: ['asc', 'desc'], // 排序顺序字段名数组, 第一位为正序, 第二位为倒序
     },
     tree: {
       width: '300px',           // 树宽度

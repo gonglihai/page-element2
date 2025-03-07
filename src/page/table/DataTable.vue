@@ -4,9 +4,9 @@
 <template>
   <div class="page-table">
     <!-- 数据表格 -->
-    <el-table v-if="tableShow" v-loading="loading" :data="tableData" ref="table" @row-click="rowClick"
-      @selection-change="handleSelectionChange" :row-key="option.rowKey" :default-expand-all="c.defaultExpandAll"
-      :border="c.border" :stripe="c.stripe" height="100%" :size="c.size">
+    <el-table v-if="tableShow" v-loading="loading" :data="tableData" ref="table" :row-key="option.rowKey"
+      :default-expand-all="c.defaultExpandAll" :border="c.border" :stripe="c.stripe" height="100%" :size="c.size"
+      @selection-change="onSelectionChange" @row-click="onRowClick" @sort-change="onSortChange">
 
       <!-- 行选择器 checkbox -->
       <el-table-column v-if="c.select" type="selection" :align="'center'" />
@@ -91,13 +91,17 @@ export default {
       loading: true,
       tableShow: true,        // 表格重渲染
       columnSlotNamePrefix: "table-col-", // 表格列插槽名前缀
+      orderBy: {
+        field: null,          // 排序字段名
+        order: null           // 顺序, 'asc' 正序, 'desc' 倒序
+      }
     };
   },
   methods: {
     /**
      * 表格行点击选中
      */
-    rowClick(row) {
+    onRowClick(row) {
       if (this.c.rowClickSelect && this.c.select) {
         this.$refs.table.toggleRowSelection(row);
       }
@@ -106,7 +110,7 @@ export default {
      * 选中事件冒泡
      * @param val 新值
      */
-    handleSelectionChange(val) {
+    onSelectionChange(val) {
       this.$emit("update:select", val);
     },
     /**
@@ -136,6 +140,13 @@ export default {
       if (this.c.pagination !== false) {
         search[this.c.pageNumber] = this.page.pageNumber;
         search[this.c.pageSize] = this.page.pageSize;
+      }
+
+      // 排序
+      if (this.orderBy.field) {
+        search[this.c.orderField] = this.orderBy.field + ' ' + this.orderBy.order;
+      } else {
+        delete search[this.c.orderField];
       }
 
       // api 不存在, 终止请求
@@ -179,6 +190,24 @@ export default {
     clean() {
       this.$refs.table.clearSelection();
     },
+    // 排序改变
+    onSortChange({ column, prop, order }) {
+      // 内置排序
+      if (column.sortable != 'custom') {
+        this.orderBy.field = null;
+        this.orderBy.order = null;
+        return;
+      }
+      // 自定义排序
+      if (order) {
+        this.orderBy.field = prop;
+        this.orderBy.order = order == 'ascending' ? this.c.orderBy[0] : this.c.orderBy[1];
+      } else {
+        this.orderBy.field = null;
+        this.orderBy.order = null;
+      }
+      this.reloadData();
+    }
   },
   computed: {
     /**
@@ -198,7 +227,8 @@ export default {
       return util.fieldMerge(this.option, config.table, [
         'select', 'rowClickSelect', 'pagination', 'border',
         'stripe', 'defaultExpandAll', 'size', 'response',
-        'pageNumber', 'pageSize', 'dataField', 'totalField', 'pageSizes']);
+        'pageNumber', 'pageSize', 'dataField', 'totalField',
+        'pageSizes', 'orderField', 'orderBy']);
     }
   },
   watch: {
