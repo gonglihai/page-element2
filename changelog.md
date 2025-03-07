@@ -12,12 +12,13 @@
   - `border` 是否显示竖边框(多级表头强制开启)
   - `defaultExpandAll` 树形表格, 默认展开全部
   - `size` 默认表格大小
-  - `sortable` 内置排序
+  - `orderField` 请求参数, 排序字段名
+  - `orderBy` 排序顺序方式数组, 第一位为正序, 第二位为倒序
 - 左侧树添加全局配置 
   - `addRoot` 是否向数据添加根节点
   - `rootName` 添加的根节点显示名称
   - `rootValue` 添加的根节点的值
-
+- 数据表格新增排序
 
 
 
