@@ -50,6 +50,12 @@ export default {
   eachBuildEntity(options, field, defaultField) {
     const r = {};
     options.forEach((item) => {
+      if (item[field] instanceof Array) {
+        item[field].forEach((fieldKey, fieldIndex) => {
+          r[fieldKey] = this.getValueByDefault(item[defaultField] && item[defaultField][fieldIndex]);
+        })
+        return;
+      }
       r[item[field]] = this.getValueByDefault(item[defaultField]);
     });
     return r;
