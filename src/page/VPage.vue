@@ -22,16 +22,14 @@
     <div class="v-page-right-div">
 
       <!-- 查询条件 -->
-      <FoldContainer class="v-page-search" v-if="option.search" name="查询条件">
-        <VSearch :option="option.search" @search="searchClick" ref="search" :searchData="searchData">
-          <template #search-button-start>
-            <slot name="search-button-start"></slot>
-          </template>
-          <template #search-button-end>
-            <slot name="search-button-end"></slot>
-          </template>
-        </VSearch>
-      </FoldContainer>
+      <VSearch v-if="option.search" :option="option.search" @search="searchClick" ref="search" :searchData="searchData">
+        <template #search-button-start>
+          <slot name="search-button-start"></slot>
+        </template>
+        <template #search-button-end>
+          <slot name="search-button-end"></slot>
+        </template>
+      </VSearch>
 
       <!-- 工具栏按钮 -->
       <tool-button class="v-page-tool-button" v-if="option.button && option.button.length" :option="option.button"
@@ -70,7 +68,6 @@ import DataTable from "./table/DataTable.vue";
 
 import Util from "./util.js";
 import api from "./api/index.js";
-import FoldContainer from "./fold/FoldContainer.vue";
 import { config } from "./config/index.js";
 
 export default {
@@ -78,8 +75,7 @@ export default {
     LeftTree,
     VSearch,
     ToolButton,
-    DataTable,
-    FoldContainer
+    DataTable
   },
   props: {
     page: {
@@ -285,7 +281,8 @@ export default {
     // 表格初始化时查询条件
     initSearch() {
       if (this.option.search) {
-        return Util.eachBuildEntity(this.option.search, "field", "default");
+
+        return Util.eachBuildEntity(Array.isArray(this.option.search) ? this.option.search : this.option.search.item, "field", "default");
       }
       return null;
     },

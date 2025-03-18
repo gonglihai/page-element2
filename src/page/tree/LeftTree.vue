@@ -2,7 +2,7 @@
   -- @author GongLiHai
  -->
 <template>
-  <FoldContainer class="page-tree" direction="x" name="左侧" :width="c.width">
+  <FoldContainer class="page-tree" direction="x" name="左侧" :width="c.width" :defaultFold="c.fold">
     <div :style="{ width: c.width }" style="height: 100%;">
       <div style="margin-right: 8px; height: 100%; display: flex; flex-direction: column; flex: none;">
         <!-- 树搜索框 -->
@@ -80,7 +80,9 @@ export default {
     },
     // 配置
     c() {
-      return Util.fieldMerge(this.option, config.tree, ['labelField', 'valueField', 'childrenField', 'width', 'expandLevel', 'response', 'expand', 'addRoot', 'rootName', 'rootValue']);
+      return Util.fieldMerge(this.option, config.tree,
+        ['labelField', 'valueField', 'childrenField', 'width', 'expandLevel',
+          'response', 'expand', 'addRoot', 'rootName', 'rootValue', 'fold']);
     }
   },
   data() {

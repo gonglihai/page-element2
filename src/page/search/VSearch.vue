@@ -3,66 +3,70 @@
  -->
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="page-search" @keypress.enter="search">
-    <div v-for="(item, index) in option" :key="`${option.field}_${option.label}_${index}`" class="page-search-item"
-      :class="item.class" :title="title(item)">
-      <label :for="labelForId(item)" class="page-search-item-label">
-        {{ item.label }}
-      </label>
-      <!-- 下拉框 -->
-      <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
-        :placeholder="placeholder(item)" :option="item.option" :api="item.api" :props="item.props" :group="item.group"
-        :multiple="item.multiple" :multipleValueType="item.multipleValueType" :clearable="isAbsentTrue(item.clearable)"
-        :size="size" />
-      <!-- 日期 -->
-      <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
-        type="date" :placeholder="placeholder(item)" :size="size"
-        :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'" :format="item.format || 'yyyy-MM-dd'"
-        :clearable="isAbsentTrue(item.clearable)" />
+  <FoldContainer class="v-page-search" name="查询条件" :defaultFold="c.fold">
+    <div class="page-search" @keypress.enter="search">
+      <div v-for="(item, index) in searchItems" :key="`${item.field}_${item.label}_${index}`" class="page-search-item"
+        :class="item.class" :title="title(item)">
+        <label :for="labelForId(item)" class="page-search-item-label">
+          {{ item.label }}
+        </label>
+        <!-- 下拉框 -->
+        <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
+          :placeholder="placeholder(item)" :option="item.option" :api="item.api" :props="item.props" :group="item.group"
+          :multiple="item.multiple" :multipleValueType="item.multipleValueType"
+          :clearable="isAbsentTrue(item.clearable)" :size="size" />
+        <!-- 日期 -->
+        <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
+          type="date" :placeholder="placeholder(item)" :size="size"
+          :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'" :format="item.format || 'yyyy-MM-dd'"
+          :clearable="isAbsentTrue(item.clearable)" />
 
-      <!-- 日期 范围 -->
-      <DateRangeSelect v-else-if="item.type === 'date-range'" :id="labelForId(item)" :form="searchData"
-        :field="item.field" :value-format="item.valueFormat" :format="item.format"
-        :clearable="isAbsentTrue(item.clearable)" :size="size" />
+        <!-- 日期 范围 -->
+        <DateRangeSelect v-else-if="item.type === 'date-range'" :id="labelForId(item)" :form="searchData"
+          :field="item.field" :value-format="item.valueFormat" :format="item.format"
+          :clearable="isAbsentTrue(item.clearable)" :size="size" />
 
-      <!-- 年 -->
-      <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
-        type="year" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
-        :value-format="item.valueFormat || 'yyyy'" />
+        <!-- 年 -->
+        <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
+          type="year" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
+          :value-format="item.valueFormat || 'yyyy'" />
 
-      <!-- 年月 -->
-      <el-date-picker v-else-if="item.type === 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
-        type="month" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
-        :value-format="item.valueFormat || 'yyyyMM'" />
+        <!-- 年月 -->
+        <el-date-picker v-else-if="item.type === 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
+          type="month" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
+          :value-format="item.valueFormat || 'yyyyMM'" />
 
-      <!-- 输入框 -->
-      <el-input v-else :id="labelForId(item)" v-model="searchData[item.field]" :placeholder="placeholder(item)"
-        :size="size" :clearable="isAbsentTrue(item.clearable)" />
+        <!-- 输入框 -->
+        <el-input v-else :id="labelForId(item)" v-model="searchData[item.field]" :placeholder="placeholder(item)"
+          :size="size" :clearable="isAbsentTrue(item.clearable)" />
+      </div>
+      <div class="page-search-button">
+        <slot name="search-button-start"></slot>
+        <el-button @click="search" type="primary" :size="size" icon="el-icon-search">搜索</el-button>
+        <el-button @click="reset" :size="size" icon="el-icon-refresh">重置</el-button>
+        <slot name="search-button-end"></slot>
+      </div>
     </div>
-    <div class="page-search-button">
-      <slot name="search-button-start"></slot>
-      <el-button @click="search" type="primary" :size="size" icon="el-icon-search">搜索</el-button>
-      <el-button @click="reset" :size="size" icon="el-icon-refresh">重置</el-button>
-      <slot name="search-button-end"></slot>
-    </div>
-  </div>
+  </FoldContainer>
 </template>
 
 <script>
-import Util from "../util.js";
+import FoldContainer from "../fold/FoldContainer.vue";
 import ApiSelect from "./ApiSelect.vue";
 import DateRangeSelect from './DateRangeSelect.vue';
+
+import Util from "../util.js";
 import { config } from '../config';
 
 const SEARCH_ID_PREFIX = "search";
 let SEARCH_ID = 0; // 组件唯一id
 
 export default {
-  components: { ApiSelect, DateRangeSelect },
+  components: { FoldContainer, ApiSelect, DateRangeSelect },
   props: {
     option: {
       // 查询配置
-      type: Array,
+      type: [Array, Object],
       default() {
         return [];
       },
@@ -129,20 +133,44 @@ export default {
      */
     reset() {
       // 重置 data 为 默认值
-      Util.eachSetResponsive(this.searchData, this.option, "field", "default");
+      Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
       this.search();
     },
     /**
      * 重置表单，不会触发 search 事件。
      */
     clean() {
-      Util.eachSetResponsive(this.searchData, this.option, "field", "default");
+      Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
     }
   },
   created() {
     // 构建 响应式 查询条件
-    Util.eachSetResponsive(this.searchData, this.option, "field", "default");
+    Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
   },
+  computed: {
+    // search 查询条件是否是数组
+    searchItemsIsArray() {
+      return Array.isArray(this.option);
+    },
+    // 搜索项数组
+    searchItems() {
+      return this.searchItemsIsArray ? this.option : this.option.item
+    },
+    // 配置
+    c() {
+      const keys = ['fold'];
+      // search 配置是对象
+      if (!this.searchItemsIsArray) {
+        return Util.fieldMerge(this.option, config.search, keys);
+      }
+      // search 配置是数组
+      const r = {};
+      keys.forEach(key => {
+        r[key] = config.search[key];
+      });
+      return r;
+    }
+  }
 };
 </script>
 <style scoped>

@@ -34,11 +34,16 @@ export default {
     // 当方向为 x 水平时, 容器宽度
     width: {
       type: String,
+    },
+    // 默认是否折叠, true 折叠, false 不折叠
+    defaultFold: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      fold: false
+      fold: this.defaultFold
     }
   }
 }

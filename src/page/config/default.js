@@ -3,7 +3,8 @@ import TableColTypes from "../table/col/TableColTypesRegister";
 export function defaultConfig() {
   return {
     search: {
-      size: 'small'             // 表单项和查询/重置按钮的大小
+      size: 'small',            // 表单项和查询/重置按钮的大小
+      fold: false,              // 默认折叠, true 折叠, false 不折叠
     },
     button: {
       size: 'small',            // 按钮大小
@@ -47,6 +48,7 @@ export function defaultConfig() {
       addRoot: false,           // 是否向数据添加根节点
       rootName: '全部',         // 添加的根节点显示名称
       rootValue: undefined,     // 添加的根节点的值
+      fold: false,              // 默认折叠, true 折叠, false 不折叠
     },
   }
 }
