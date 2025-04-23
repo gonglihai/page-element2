@@ -2,8 +2,6 @@
  * 工具类
  * @author GongLiHai
  */
-import Vue from "vue";
-
 export default {
   /**
    * 通过 default 字段 获取默认值
@@ -19,25 +17,6 @@ export default {
     } else {
       return def;
     }
-  },
-  /**
-   * 向 sourceObject 批量 添加 响应 属性
-   * @param {Object} sourceObject vue-data 中对象
-   * @param {Array}  options      设置对象数组
-   * @param {String} field        从 option 中获取响应字段的字段名
-   * @param {String} defaultField 从 option 中获取响应字段的默认值
-   */
-  eachSetResponsive(sourceObject, options, field, defaultField) {
-    options.forEach((item) => {
-      if (item[field] instanceof Array) {
-        // 对于日期范围下拉框 DateRangeSelect.vue 等组件多个值的情况进行特殊处理, field 是 数组, default 也是数组
-        item[field].forEach((fieldKey, fieldIndex) => {
-          Vue.set(sourceObject, fieldKey, this.getValueByDefault(item[defaultField] && item[defaultField][fieldIndex]));
-        })
-        return;
-      }
-      Vue.set(sourceObject, item[field], this.getValueByDefault(item[defaultField]));
-    });
   },
   /**
    * 返回集合中对象某个属性的值组成逗号分隔字符串

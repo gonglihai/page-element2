@@ -57,6 +57,7 @@ import DateRangeSelect from './DateRangeSelect.vue';
 
 import Util from "../util.js";
 import { config } from '../config';
+import Vue from "vue";
 
 const SEARCH_ID_PREFIX = "search";
 let SEARCH_ID = 0; // 组件唯一id
@@ -140,16 +141,46 @@ export default {
      * 重置表单，不会触发 search 事件。
      */
     clean() {
-      this.setSearchData();
-      // 重新触发调用 change 事件
-      this.searchItems.forEach(searchItem => {
-        if (searchItem.change) {
-          searchItem.change(this.searchData);
-        }
-      })
+      this.setSearchData(true);
     },
-    setSearchData() {
-      Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
+    /**
+     * 设置查询条件对象
+     * @param callChange 是否调用 searchItem 的 change 事件
+     */
+    setSearchData(callChange) {
+      this.searchItems.forEach((searchItem) => {
+        const field = searchItem['field'];
+        const def = searchItem['default'];
+
+        // field 是字符串
+        if (typeof field == 'string') {
+          const newValue = Util.getValueByDefault(def);
+          if (newValue != this.searchData[field]) {
+            Vue.set(this.searchData, field, newValue);
+            if (callChange) {
+              this.searchItemChange(searchItem);
+            }
+          }
+
+          return;
+        }
+        
+        // 对于日期范围下拉框 DateRangeSelect.vue 等组件多个值的情况进行特殊处理, field 是 数组, default 也是数组
+        if (Array.isArray(field)) {
+          let isChange = false;
+          field.forEach((fieldKey, fieldIndex) => {
+            const newValue = Util.getValueByDefault(def && def[fieldIndex]);
+            if (this.searchData[fieldKey] != newValue) {
+              Vue.set(this.searchData, fieldKey, newValue);
+              isChange = true;
+            }
+          })
+          if (callChange && isChange) {
+            this.searchItemChange(searchItem);
+          }
+          return;
+        }
+      });
     },
     /**
      * 表单项值改变事件
