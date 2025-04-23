@@ -14,31 +14,31 @@
         <api-select v-if="item.type === 'select'" :id="labelForId(item)" v-model="searchData[item.field]"
           :placeholder="placeholder(item)" :option="item.option" :api="item.api" :props="item.props" :group="item.group"
           :multiple="item.multiple" :multipleValueType="item.multipleValueType"
-          :clearable="isAbsentTrue(item.clearable)" :size="size" />
+          :clearable="isAbsentTrue(item.clearable)" :size="size" @change="searchItemChange(item)" />
         <!-- 日期 -->
         <el-date-picker v-else-if="item.type === 'date'" :id="labelForId(item)" v-model="searchData[item.field]"
           type="date" :placeholder="placeholder(item)" :size="size"
           :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'" :format="item.format || 'yyyy-MM-dd'"
-          :clearable="isAbsentTrue(item.clearable)" />
+          :clearable="isAbsentTrue(item.clearable)" @change="searchItemChange(item)" />
 
         <!-- 日期 范围 -->
         <DateRangeSelect v-else-if="item.type === 'date-range'" :id="labelForId(item)" :form="searchData"
           :field="item.field" :value-format="item.valueFormat" :format="item.format"
-          :clearable="isAbsentTrue(item.clearable)" :size="size" />
+          :clearable="isAbsentTrue(item.clearable)" :size="size" @change="searchItemChange(item)" />
 
         <!-- 年 -->
         <el-date-picker v-else-if="item.type === 'year'" :id="labelForId(item)" v-model="searchData[item.field]"
           type="year" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
-          :value-format="item.valueFormat || 'yyyy'" />
+          :value-format="item.valueFormat || 'yyyy'" @change="searchItemChange(item)" />
 
         <!-- 年月 -->
         <el-date-picker v-else-if="item.type === 'year-month'" :id="labelForId(item)" v-model="searchData[item.field]"
           type="month" :placeholder="placeholder(item)" :size="size" :clearable="isAbsentTrue(item.clearable)"
-          :value-format="item.valueFormat || 'yyyyMM'" />
+          :value-format="item.valueFormat || 'yyyyMM'" @change="searchItemChange(item)" />
 
         <!-- 输入框 -->
         <el-input v-else :id="labelForId(item)" v-model="searchData[item.field]" :placeholder="placeholder(item)"
-          :size="size" :clearable="isAbsentTrue(item.clearable)" />
+          :size="size" :clearable="isAbsentTrue(item.clearable)" @change="searchItemChange(item)" />
       </div>
       <div class="page-search-button">
         <slot name="search-button-start"></slot>
@@ -141,6 +141,15 @@ export default {
      */
     clean() {
       Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
+    },
+    /**
+     * 表单项值改变事件
+     * @param searchItem 查询表单项
+     */
+    searchItemChange(searchItem) {
+      if (searchItem.change) {
+        searchItem.change(this.searchData);
+      }
     }
   },
   created() {

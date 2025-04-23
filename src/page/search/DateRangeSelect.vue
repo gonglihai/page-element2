@@ -36,7 +36,12 @@ export default {
     clearable: {
       type: Boolean,
       default: true
-    }
+    },
+    // 当 valueFormat 为 'yyyy-MM-dd' 时, 是否补全时间, 开始时间添加 00:00:00, 结束时间添加 23:59:59, 默认 true
+    fullDay: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -45,19 +50,27 @@ export default {
   },
   methods: {
     change(newValue) {
+      // fullDay 当 valueFormat 为 'YYYY-MM-DD' 时, 是否补全时间, 开始时间添加 00:00:00, 结束时间添加 23:59:59
+      if (this.fullDay && this.valueFormat == 'yyyy-MM-dd' && newValue) {
+        newValue = [newValue[0] + ' 00:00:00', newValue[1] + ' 23:59:59']
+      }
+
       // field 是字符串
       if (this.fieldIsString) {
         this.$set(this.form, this.field, newValue);
+        this.$emit('change', newValue);
         return;
       }
       // field 是数组
       if (newValue) {
-        this.$set(this.form, this.field[0], newValue[0])
-        this.$set(this.form, this.field[1], newValue[1])
+        this.$set(this.form, this.field[0], newValue[0]);
+        this.$set(this.form, this.field[1], newValue[1]);
+        this.$emit('change', newValue);
         return;
       }
       this.$set(this.form, this.field[0], undefined)
       this.$set(this.form, this.field[1], undefined)
+      this.$emit('change', newValue);
     }
   },
   computed: {

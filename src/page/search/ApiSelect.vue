@@ -2,25 +2,12 @@
   -- @author GongLiHai
  -->
 <template>
-  <div>
-    <el-select v-model="thisValue" :placeholder="placeholder" :size="size" :id="id" :multiple="multiple"
-      :clearable="clearable" filterable ref="elSelect" @change="change">
-      <!-- 分组 -->
-      <template v-if="group">
-        <el-option-group v-for="(l1, l1_) in thisOption" :key="'l1_' + l1_" :label="l1[thisProps.label]">
-          <el-option v-for="(l2, l2_) in l1[thisProps.children]" :key="'l2_' + l2_" :label="l2[thisProps.label]"
-            :value="l2[thisProps.value]">
-          </el-option>
-        </el-option-group>
-      </template>
-      <!-- 普通 -->
-      <template v-else>
-        <el-option v-for="(item, index) in thisOption" :key="index" :label="item[thisProps.label]"
-          :value="item[thisProps.value]">
-        </el-option>
-      </template>
-    </el-select>
-  </div>
+  <el-select :value="thisValue" :placeholder="placeholder" :size="size" :id="id" :multiple="multiple"
+    :clearable="clearable" filterable ref="elSelect" @change="change" :disabled="disabled">
+    <el-option v-for="(item, index) in thisOption" :key="index" :label="item[thisProps.label]"
+      :value="item[thisProps.value]">
+    </el-option>
+  </el-select>
 </template>
 
 <script>
@@ -44,7 +31,7 @@ export default {
     },
     // 表单值
     value: {
-      type: [String, Array, Number],
+      type: [String, Array, Number, Boolean],
     },
     // 选项
     option: {
@@ -78,11 +65,6 @@ export default {
         };
       },
     },
-    // 选项分组
-    group: {
-      type: Boolean,
-      default: false,
-    },
     // 允许清空
     clearable: {
       type: Boolean,
@@ -92,12 +74,15 @@ export default {
     autoSelectFirst: {
       type: Boolean,
       default: false
+    },
+    // 是否禁用
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      // 本组件的 value, option
-      thisValue: this.value,
       thisOption: this.option,
       // 键值对照, 分组二级key
       thisProps: {
@@ -106,6 +91,22 @@ export default {
         children: this.props.children || "children",
       },
     };
+  },
+  computed: {
+    thisValue() {
+      // 多选, 且多选值类型为 string 逗号分隔字符串
+      let thisValue;
+      if (this.multiple && this.multipleValueType === "string") {
+        thisValue = Util.commaStringToList(this.value);
+        // 解决选项内值为 Number 类型, 字符串分割后, 值为 String 类型, 导致 el-select 无法选中的问题
+        if (this.thisOption && this.thisOption.length && typeof this.thisOption[0][this.thisProps.value] == 'number') {
+          thisValue = thisValue.map(item => Number(item));
+        }
+      } else {
+        thisValue = this.value;
+      }
+      return thisValue;
+    }
   },
   methods: {
     /**
@@ -134,6 +135,9 @@ export default {
      * change 事件
      */
     change(newVal) {
+      if (newVal == this.value) {
+        return;
+      }
       let value;
       if (this.multiple && this.multipleValueType === "string") {
         value = Util.listToCommaString(newVal);
@@ -141,11 +145,10 @@ export default {
         value = newVal;
       }
       this.$emit("input", value);
-      this.$emit("change", value);
+      this.$emit('change', value);
     },
     // 设置值
     setValue(value) {
-      this.thisValue = value;
       this.change(value);
     },
     // 修改选项
@@ -153,7 +156,7 @@ export default {
       this.thisOption = options;
       // 新的选项为空, 设置值为空
       if (!this.thisOption || !this.thisOption.length) {
-        this.setValue(null);
+        this.setValue(undefined);
         return;
       }
       // 新的选项包含已选择的值 (单选)
@@ -169,33 +172,19 @@ export default {
       }
 
       // 新的选项不包含新的值
-      this.setValue(null);
+      this.setValue(undefined);
     }
   },
   watch: {
-    // 上层 value 改变, 本层 thisValue 改变
-    value: {
-      handler(newVal) {
-        // 多选, 且多选值类型为 string 逗号分隔字符串
-        let thisValue;
-        if (this.multiple && this.multipleValueType === "string") {
-          thisValue = Util.commaStringToList(newVal);
-          // 解决选项内值为 Number 类型, 字符串分割后, 值为 String 类型, 导致 el-select 无法选中的问题
-          if (this.thisOption && this.thisOption.length && typeof this.thisOption[0][this.thisProps.value] == 'number') {
-            thisValue = thisValue.map(item => Number(item));
-          }
-        } else {
-          thisValue = newVal;
-        }
-        this.thisValue = thisValue;
-      },
-      immediate: true
-    },
     // api 变更, 更新选项, 更新值
     api(newVal) {
       api.get(newVal).then((r) => {
         this.changeOptions(r.data);
       });
+    },
+    // 监听上层选项改变, 更新选项, 更新值
+    option(newVal) {
+      this.changeOptions(newVal)
     }
   },
 };
