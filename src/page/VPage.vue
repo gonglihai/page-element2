@@ -44,7 +44,7 @@
 
       <!-- 数据表格 -->
       <data-table class="v-page-data-table" v-if="option.table" :option="option.table" :select.sync="tableSelect"
-        :initSearch="initSearch" ref="dataTable">
+        ref="dataTable">
         <template v-for="colSlot in tableColSlots" v-slot:[colSlot]="{ value, row, index, col, scope }">
           <slot :value="value" :row="row" :index="index" :col="col" :scope="scope" :name="colSlot">
           </slot>
@@ -93,6 +93,12 @@ export default {
       option: this.page,
     };
   },
+  created() {
+    // 当查询条件不存在时, 主动初始化表格, 查询条件存在, 查询条件发起查询事件
+    if (!this.page.search) {
+      this.tableReload();
+    }
+  },
   methods: {
     /**
      * 树节点点击重载表格
@@ -133,8 +139,10 @@ export default {
      * 表格重载
      */
     tableReload(params) {
-      if (this.$refs && this.$refs.dataTable && typeof this.$refs.dataTable.reloadData === 'function') {
-        this.$refs.dataTable.reloadData({ ...this.searchData, ...params });
+      if (this.page.table) {
+        this.$nextTick(() => {
+          this.$refs.dataTable.reloadData({ ...this.searchData, ...params });
+        })
       }
     },
     /**
@@ -277,14 +285,6 @@ export default {
         }
       });
       return r;
-    },
-    // 表格初始化时查询条件
-    initSearch() {
-      if (this.option.search) {
-
-        return Util.eachBuildEntity(Array.isArray(this.option.search) ? this.option.search : this.option.search.item, "field", "default");
-      }
-      return null;
     },
     // tree refs 映射
     $tree() {

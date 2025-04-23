@@ -40,27 +40,6 @@ export default {
     });
   },
   /**
-   * 遍历 options 生成 配置对象
-   * 大概逻辑同 eachSetResponsive 方法, eachSetResponsive 是向 vue-data 中设置属性, 此方法是生成 新对象
-   * @param {Array}  options      设置对象数组
-   * @param {String} field        从 option 中获取字段的字段名
-   * @param {String} defaultField 从 option 中获取字段的默认值
-   * @returns
-   */
-  eachBuildEntity(options, field, defaultField) {
-    const r = {};
-    options.forEach((item) => {
-      if (item[field] instanceof Array) {
-        item[field].forEach((fieldKey, fieldIndex) => {
-          r[fieldKey] = this.getValueByDefault(item[defaultField] && item[defaultField][fieldIndex]);
-        })
-        return;
-      }
-      r[item[field]] = this.getValueByDefault(item[defaultField]);
-    });
-    return r;
-  },
-  /**
    * 返回集合中对象某个属性的值组成逗号分隔字符串
    * @param {Array}  list  集合
    * @param {String} field 属性名

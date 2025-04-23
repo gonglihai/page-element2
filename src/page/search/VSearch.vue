@@ -133,13 +133,22 @@ export default {
      */
     reset() {
       // 重置 data 为 默认值
-      Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
+      this.clean();
       this.search();
     },
     /**
      * 重置表单，不会触发 search 事件。
      */
     clean() {
+      this.setSearchData();
+      // 重新触发调用 change 事件
+      this.searchItems.forEach(searchItem => {
+        if (searchItem.change) {
+          searchItem.change(this.searchData);
+        }
+      })
+    },
+    setSearchData() {
       Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
     },
     /**
@@ -153,8 +162,8 @@ export default {
     }
   },
   created() {
-    // 构建 响应式 查询条件
-    Util.eachSetResponsive(this.searchData, this.searchItems, "field", "default");
+    this.setSearchData();
+    this.search();
   },
   computed: {
     // search 查询条件是否是数组

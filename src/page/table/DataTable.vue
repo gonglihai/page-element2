@@ -51,9 +51,6 @@ export default {
   components: {
     ElTableColumnPack,
   },
-  created() {
-    this.reloadData(this.initSearch);
-  },
   props: {
     // 表格配置选项
     option: {
@@ -67,13 +64,6 @@ export default {
       type: Array,
       default() {
         return [];
-      },
-    },
-    // 表格初始化加载查询条件
-    initSearch: {
-      type: Object,
-      default() {
-        return null;
       },
     },
   },
@@ -234,7 +224,7 @@ export default {
   watch: {
     // api 变更, 重新请求数据
     'option.api'() {
-      this.reloadData(this.initSearch);
+      this.reloadData();
     }
   }
 };
