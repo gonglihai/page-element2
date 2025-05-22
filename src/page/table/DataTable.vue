@@ -177,7 +177,7 @@ export default {
       this.page.total = total;
     },
     // 清理
-    clean() {
+    clear() {
       this.$refs.table.clearSelection();
     },
     // 排序改变

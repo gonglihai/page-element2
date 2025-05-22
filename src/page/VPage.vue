@@ -33,7 +33,7 @@
 
       <!-- 工具栏按钮 -->
       <tool-button class="v-page-tool-button" v-if="option.button && option.button.length" :option="option.button"
-        :tableSelect="tableSelect" @click="toolButtonClick">
+        :tableSelect="tableSelect">
         <template #button-start>
           <slot name="button-start"></slot>
         </template>
@@ -67,7 +67,6 @@ import ToolButton from "./button/ToolButton.vue";
 import DataTable from "./table/DataTable.vue";
 
 import Util from "./util.js";
-import api from "./api/index.js";
 import { config } from "./config/index.js";
 
 export default {
@@ -146,132 +145,21 @@ export default {
       }
     },
     /**
-     * 工具栏按钮点击事件
-     */
-    toolButtonClick(button) {
-      // 数据表格中选中的行数量
-      const tableSelectLength = this.tableSelect.length;
-
-      // 选中数量验证
-      // selectMin 最小选中
-      if (button.selectMin && button.selectMin > tableSelectLength) {
-        this.$message(
-          "最少选中 " +
-          button.selectMin +
-          " 条数据, 已选 " +
-          tableSelectLength +
-          " 条"
-        );
-        return;
-      }
-      // selectMax 最多选中
-      if (button.selectMax && button.selectMax < tableSelectLength) {
-        this.$message(
-          "最多选中 " +
-          button.selectMax +
-          " 条数据, 已选 " +
-          tableSelectLength +
-          " 条"
-        );
-        return;
-      }
-      // selectCount 只能选中
-      if (button.selectCount && button.selectCount != tableSelectLength) {
-        this.$message(
-          "只能选中 " +
-          button.selectCount +
-          " 条数据, 已选 " +
-          tableSelectLength +
-          " 条"
-        );
-        return;
-      }
-
-      // 非内置处理函数, 事件冒泡, 移交外部处理
-      if (!button.internal) {
-        switch (typeof button.click) {
-          case "string":
-            this.$emit(button.click, this.tableSelect, button);
-            break;
-          case "function":
-            button.click(this.tableSelect, button);
-            break;
-        }
-        return;
-      }
-      // 内置事件处理
-      switch (button.internal) {
-        // 删除
-        case "delete":
-          this.internalDelete(button, this.tableSelect);
-          break;
-        default:
-          console.warn("Page.vue: 按钮配置了无效的内置函数");
-          break;
-      }
-    },
-    /**
-     * 内置删除
-     * @param {Object} button 按钮配置
-     * @param {Object} tableSelectData 数据表格选中对象
-     */
-    internalDelete(button, tableSelectData) {
-      this.$confirm(
-        `此操作将删除这些数据, 是否继续? (共 ${tableSelectData.length} 条)`,
-        "删除确认",
-        {
-          confirmButtonText: "确认",
-          cancelButtonText: "取消",
-          type: "error",
-          confirmButtonClass: "el-button--danger",
-        }
-      )
-        .then(() => {
-          // 点确认, 请求后端, 成功删除后重载表格
-          let ids =
-            button.fieldType == "array"
-              ? Util.objectsToArray(
-                tableSelectData,
-                Util.ifAbsentDefault(button.field, "id")
-              )
-              : Util.objectsToString(
-                tableSelectData,
-                Util.ifAbsentDefault(button.field, "id")
-              );
-          api
-            .delete(button.api, {
-              [Util.ifAbsentDefault(button.requestField, "ids")]: ids,
-            })
-            .then((r) => {
-              if (r.code === 0) {
-                this.$message({
-                  type: "success",
-                  message: "删除成功!",
-                });
-              }
-            })
-            .finally(() => {
-              this.tableReload();
-            });
-        })
-        .catch(() => { });
-    },
-    /**
      * 清理
      * 1. tree 树选中的内容, 树搜索
      * 2. search 查询条件 的值
      * 3. dataTable 选中的行
      */
-    clean() {
+    clear() {
       if (this.option.tree && this.$refs.tree) {
-        this.$refs.tree.clean();
+        this.$refs.tree.clear();
         this.treeSetSearchData();
       }
       if (this.option.search && this.$refs.search) {
-        this.$refs.search.clean();
+        this.$refs.search.clear();
       }
       if (this.option.table && this.$refs.dataTable) {
-        this.$refs.dataTable.clean();
+        this.$refs.dataTable.clear();
       }
     },
   },

@@ -134,13 +134,13 @@ export default {
      */
     reset() {
       // 重置 data 为 默认值
-      this.clean();
+      this.clear();
       this.search();
     },
     /**
      * 重置表单，不会触发 search 事件。
      */
-    clean() {
+    clear() {
       this.setSearchData(true);
     },
     /**

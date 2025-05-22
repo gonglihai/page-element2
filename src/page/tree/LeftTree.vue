@@ -201,7 +201,7 @@ export default {
     /**
      * 清空树选择数据
      */
-    clean() {
+    clear() {
       this.$refs.tree.setCurrentKey(null);
       this.checkData = null;
       this.filter = '';

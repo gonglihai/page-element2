@@ -1,9 +1,31 @@
 # 变更日志 Changelog
 
+## [0.2.6] - 2025-05-22
+
+### ✨ 新增
+
+- 操作按钮添加 `confirmClick` 点击确认配置
+
+### 🔥 移除
+
+- 操作按钮移除 `internal` 内置处理函数及相关属性 `fieldType`、`api`、`requestField` 等属性
+
+### 🛠️ 变更
+
+- 组件所有的 `clean` 方法重命名为 `clear`, 涉及的组件有 `VPage.vue`、`VSearch.vue`、`DataTable.vue`、`LeftTree.vue`
+
+### 📝 其他
+
+- 操作按钮点击事件处理函数从 `Page.vue` 迁移到 `ToolButton.vue` 组件内
+
+
+
 ## [0.2.5] - 2025-04-23
 ### 🐞 修复
 
 - 解决 `search` 查询条件重置时, 表单值未发生改变, `change` 重复触发问题
+
+
 
 
 ## [0.2.4] - 2025-04-23
